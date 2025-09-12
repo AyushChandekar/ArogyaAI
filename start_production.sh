@@ -70,5 +70,4 @@ exec rasa run \
     --enable-api \
     --cors "*" \
     --auth-token "${RASA_AUTH_TOKEN:-}" \
-    --debug \
-    > /app/logs/rasa.log 2>&1
+    --debug
