@@ -1,0 +1,140 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - bot_challenge
+  - ask_disease_info
+  - ask_vaccination_schedule
+  - ask_outbreak_info
+  - ask_languages
+  - out_of_scope
+  - thanks
+  - ask_prevention_tips
+  - ask_symptoms_info
+  - ask_emergency_help
+  - ask_who_guidelines
+  - ask_seasonal_health
+  - ask_home_treatment
+  - ask_when_see_doctor
+  - search_by_symptom
+
+entities:
+  - disease
+  - age_group
+  - location
+  - symptom
+  - severity
+  - body_part
+  - time_duration
+
+slots:
+  language:
+    type: text
+    influence_conversation: true
+    initial_value: "en"
+    mappings:
+    - type: custom
+  user_locale:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
+  disease:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: disease
+  age_group:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: age_group
+  location:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: location
+  symptom:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: symptom
+  severity:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: severity
+  body_part:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: body_part
+  time_duration:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: time_duration
+  last_disease_query:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
+
+responses:
+  utter_greet:
+  - text: "Hello! I'm Dr.Doom, your friendly health education companion. I can help with prevention tips, symptoms, and vaccination schedules. I support many languages—just type in your preferred language and I'll switch. What would you like to know today?"
+
+  utter_goodbye:
+  - text: "Take care! If you have more health questions, I'm here to help."
+
+  utter_iamabot:
+  - text: "I'm a virtual health educator. I share general health information, not medical diagnoses."
+
+  utter_disclaimer:
+  - text: "Remember, I share general health information, but I'm not a substitute for a doctor. For specific concerns, please consult a healthcare professional."
+
+  utter_out_of_scope:
+  - text: "I'm focused on health education—things like prevention, symptoms, and vaccines. Could you ask a health-related question?"
+
+  utter_languages:
+  - text: "I support English, Hindi, Bengali, Marathi, Tamil, Telugu, Gujarati, Kannada, Malayalam, Punjabi, and more. Type in your language and I'll respond accordingly."
+
+  utter_prevention_tips:
+  - text: "I can provide prevention tips for various diseases. Which disease would you like prevention information about?"
+
+  utter_symptoms_guide:
+  - text: "I can help you understand symptoms of various diseases. What symptoms are you experiencing or curious about?"
+
+  utter_emergency_guidance:
+  - text: "For medical emergencies in India, call 108. I can provide first aid guidance for non-emergency situations."
+
+  utter_seasonal_health:
+  - text: "I can provide seasonal health advice based on current weather conditions and disease patterns in your area."
+
+  utter_who_updates:
+  - text: "I have access to the latest WHO health guidelines and updates. What health topic interests you?"
+
+  utter_acknowledge:
+  - text: "Got it. Let me help with that."
+
+actions:
+  - action_disease_info_improved
+  - action_vaccination_schedule
+  - action_emergency_help
+  - action_prevention_tips
+  - action_language_info_improved
+  - action_default_fallback
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Chatbot - Web Test</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 600px;
+            height: 80vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: #2196F3;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: #f5f5f5;
+            color: #333;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            padding: 15px 20px;
+            background: #f5f5f5;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            display: none;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #666;
+            animation: bounce 1.4s ease-in-out infinite both;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .message-input:focus {
+            border-color: #2196F3;
+        }
+
+        .send-button {
+            margin-left: 10px;
+            padding: 15px 25px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .send-button:hover {
+            background: #1976D2;
+        }
+
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .quick-suggestions {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .suggestion-btn {
+            padding: 8px 16px;
+            background: #e3f2fd;
+            border: 1px solid #2196F3;
+            color: #2196F3;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .suggestion-btn:hover {
+            background: #2196F3;
+            color: white;
+        }
+
+        .status {
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 14px;
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🏥 Healthcare Chatbot</h1>
+            <p>Multilingual Medical Assistant</p>
+        </div>
+
+        <div class="status" id="status">
+            🔌 Connecting to chatbot server...
+        </div>
+
+        <div class="quick-suggestions">
+            <button class="suggestion-btn" onclick="sendMessage('Hello')">👋 Hello</button>
+            <button class="suggestion-btn" onclick="sendMessage('What are the symptoms of malaria?')">🦟 Malaria Info</button>
+            <button class="suggestion-btn" onclick="sendMessage('मलेरिया के बारे में बताएं')">🇮🇳 हिंदी में</button>
+            <button class="suggestion-btn" onclick="sendMessage('डेंगू के लक्षण क्या हैं?')">🤒 डेंगू</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                Welcome to the Healthcare Chatbot! 👋<br><br>
+                I can help you with:<br>
+                • Disease information and symptoms<br>
+                • Prevention tips<br>
+                • When to see a doctor<br>
+                • Health advice in multiple languages<br><br>
+                Try asking me about malaria, dengue, or any health topic!
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <input 
+                type="text" 
+                class="message-input" 
+                id="messageInput" 
+                placeholder="Type your message... (English, Hindi, etc.)"
+                onkeypress="if(event.key==='Enter') sendMessage()"
+            >
+            <button class="send-button" id="sendButton" onclick="sendMessage()">
+                Send
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const RASA_SERVER_URL = 'http://localhost:5005';
+        const WEBHOOK_URL = `${RASA_SERVER_URL}/webhooks/rest/webhook`;
+        
+        // DOM elements
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const status = document.getElementById('status');
+
+        // User session ID
+        const userId = 'web-user-' + Math.random().toString(36).substr(2, 9);
+
+        // Check server status
+        async function checkServerStatus() {
+            try {
+                const response = await fetch(`${RASA_SERVER_URL}/`);
+                if (response.ok) {
+                    status.textContent = '✅ Connected to chatbot server';
+                    status.className = 'status success';
+                } else {
+                    throw new Error('Server not responding');
+                }
+            } catch (error) {
+                status.textContent = '❌ Cannot connect to server. Make sure Rasa is running on port 5005';
+                status.className = 'status error';
+            }
+        }
+
+        // Send message function
+        async function sendMessage(text = null) {
+            const message = text || messageInput.value.trim();
+            
+            if (!message) return;
+
+            // Clear input
+            if (!text) messageInput.value = '';
+
+            // Add user message to chat
+            addMessage(message, 'user');
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Disable send button
+            sendButton.disabled = true;
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sender: userId,
+                        message: message
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const botResponses = await response.json();
+
+                // Hide typing indicator
+                hideTypingIndicator();
+
+                // Add bot responses
+                if (botResponses && botResponses.length > 0) {
+                    botResponses.forEach(botResponse => {
+                        if (botResponse.text) {
+                            addMessage(botResponse.text, 'bot');
+                        }
+                    });
+                } else {
+                    addMessage('I apologize, but I didn\'t understand that. Could you please rephrase your question?', 'bot');
+                }
+
+            } catch (error) {
+                hideTypingIndicator();
+                addMessage(`Error: ${error.message}. Please make sure the Rasa server is running.`, 'bot');
+                console.error('Error sending message:', error);
+            }
+
+            // Re-enable send button
+            sendButton.disabled = false;
+            messageInput.focus();
+        }
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.textContent = text;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'block';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkServerStatus();
+            messageInput.focus();
+            
+            // Recheck server status every 30 seconds
+            setInterval(checkServerStatus, 30000);
+        });
+
+        // Handle Enter key
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

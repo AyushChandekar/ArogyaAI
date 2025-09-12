@@ -1,0 +1,317 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hello
+    - hi there
+    - good morning
+    - good evening
+    - good afternoon
+    - hey
+    - hi
+    - namaste
+    - hello there
+    - greetings
+
+- intent: goodbye
+  examples: |
+    - goodbye
+    - bye
+    - see you later
+    - take care
+    - bye bye
+    - good night
+    - have a nice day
+    - catch you later
+    - until next time
+    - farewell
+
+- intent: affirm
+  examples: |
+    - yes
+    - correct
+    - right
+    - indeed
+    - of course
+    - exactly
+    - that's right
+    - sure
+    - absolutely
+    - okay
+
+- intent: deny
+  examples: |
+    - no
+    - not really
+    - I don't think so
+    - nope
+    - no way
+    - never
+    - incorrect
+    - wrong
+    - not at all
+    - definitely not
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - who are you?
+    - what are you?
+    - are you real?
+    - am I talking to a computer?
+    - are you artificial?
+
+- intent: ask_disease_info
+  examples: |
+    - what are the symptoms of [dengue](disease)?
+    - tell me about [malaria](disease)
+    - how do you prevent [diabetes](disease)?
+    - what is [tuberculosis](disease)?
+    - symptoms of [covid-19](disease)
+    - how to prevent [hypertension](disease)
+    - what are signs of [heart disease](disease)
+    - tell me about [cancer](disease)
+    - [flu](disease) symptoms
+    - how to avoid [cholera](disease)
+    - what causes [asthma](disease)?
+    - [pneumonia](disease) prevention
+    - signs of [stroke](disease)
+    - [hepatitis](disease) information
+    - how dangerous is [typhoid](disease)?
+    - symptoms of fever
+    - cold and cough remedies
+    - stomach pain causes
+    - headache reasons
+    - chest pain symptoms
+    - मलेरिया के बारे में बताएं
+    - डेंगू के लक्षण क्या हैं?
+    - [मलेरिया](disease) की जानकारी दें
+    - [डेंगू](disease) से कैसे बचें?
+    - [डायबिटीज](disease) के लक्षण
+    - [टीबी](disease) क्या है?
+    - बुखार के लक्षण क्या हैं?
+    - सिरदर्द क्यों होता है?
+    - पेट दर्द का इलाज
+    - [हृदय रोग](disease) के संकेत
+    - [कैंसर](disease) के बारे में जानकारी
+
+- intent: ask_vaccination_schedule
+  examples: |
+    - when should [babies](age_group) get vaccinated?
+    - vaccination schedule for [infants](age_group)
+    - what vaccines do [children](age_group) need?
+    - when to give polio vaccine?
+    - measles vaccine timing
+    - hepatitis B vaccine schedule
+    - BCG vaccine for [newborns](age_group)
+    - [adult](age_group) vaccination schedule
+    - flu shot timing
+    - covid vaccine doses
+    - vaccine calendar for [kids](age_group)
+    - immunization schedule
+    - when to get tetanus shot?
+    - vaccination for [pregnant women](age_group)
+    - travel vaccines needed
+    - booster shot timing
+    - vaccine side effects
+    - missed vaccine doses
+    - vaccine safety for [elderly](age_group)
+    - school vaccination requirements
+
+- intent: ask_outbreak_info
+  examples: |
+    - is there a disease outbreak?
+    - current health alerts
+    - epidemic information
+    - disease outbreak in [mumbai](location)
+    - health emergency updates
+    - pandemic guidelines
+    - outbreak prevention measures
+    - community health alerts
+    - infectious disease spread
+    - quarantine guidelines
+    - isolation procedures
+    - outbreak symptoms to watch
+    - when to report symptoms
+    - disease surveillance
+    - epidemic preparedness
+    - public health emergency
+    - contact tracing information
+    - outbreak response
+    - health department alerts
+    - disease control measures
+
+- intent: ask_languages
+  examples: |
+    - what languages do you speak?
+    - can you speak hindi?
+    - do you support regional languages?
+    - can you talk in my local language?
+    - language options
+    - multilingual support
+    - speak in bengali
+    - tamil language support
+    - can you understand punjabi?
+    - gujarati translation
+    - marathi support
+    - telugu language
+    - kannada support
+    - malayalam option
+    - switch language
+    - change to hindi
+    - talk in my language
+    - local language support
+    - आप हिंदी बोल सकते हैं?
+    - তুমি বাংলা বলতে পারো?
+
+- intent: out_of_scope
+  examples: |
+    - what's the weather like?
+    - tell me a joke
+    - what time is it?
+    - play music
+    - order food
+    - book a ticket
+    - what's the news?
+    - how old are you?
+    - where do you live?
+    - what's your favorite color?
+    - tell me about movies
+    - sports scores
+    - stock prices
+    - restaurant recommendations
+    - shopping advice
+    - travel planning
+    - cooking recipes
+    - fashion tips
+    - technology news
+    - entertainment gossip
+
+- intent: ask_prevention_tips
+  examples: |
+    - prevention tips for [malaria](disease)
+    - how to prevent [dengue](disease)
+    - [diabetes](disease) prevention
+    - preventive measures for [tuberculosis](disease)
+    - how to stop [covid](disease)
+    - [hypertension](disease) prevention methods
+    - ways to prevent [pneumonia](disease)
+    - general prevention tips
+    - health prevention guidelines
+    - बचाव के तरीके
+    - रोकथाम के उपाय
+
+- intent: ask_symptoms_info
+  examples: |
+    - symptoms of [malaria](disease)
+    - [dengue](disease) symptoms
+    - signs of [diabetes](disease)
+    - [tuberculosis](disease) warning signs
+    - [covid](disease) symptoms
+    - what are [malaria](disease) symptoms
+    - I have [fever](symptom)
+    - experiencing [headache](symptom)
+    - [cough](symptom) for weeks
+    - [chest pain](symptom)
+    - [shortness of breath](symptom)
+    - [nausea](symptom) and [vomiting](symptom)
+    - लक्षण क्या हैं
+    - संकेत बताएं
+
+- intent: ask_home_treatment
+  examples: |
+    - home remedies for [malaria](disease)
+    - [dengue](disease) home care
+    - how to manage [diabetes](disease) at home
+    - home treatment for [tuberculosis](disease)
+    - [covid](disease) home care
+    - treating [hypertension](disease) at home
+    - [pneumonia](disease) home remedies
+    - home care for [fever](symptom)
+    - managing [cough](symptom) at home
+    - [headache](symptom) relief at home
+    - घरेलू इलाज
+    - घर में उपचार
+
+- intent: ask_when_see_doctor
+  examples: |
+    - when to see doctor for [malaria](disease)?
+    - [dengue](disease) emergency signs
+    - when is [diabetes](disease) serious?
+    - [tuberculosis](disease) danger signs
+    - [covid](disease) emergency symptoms
+    - when to seek help for [hypertension](disease)
+    - [pneumonia](disease) warning signs
+    - emergency symptoms of [fever](symptom)
+    - when is [chest pain](symptom) serious?
+    - dangerous [cough](symptom) signs
+    - डॉक्टर को कब दिखाना चाहिए
+    - तुरंत इलाज कब करवाएं
+
+- intent: ask_emergency_help
+  examples: |
+    - emergency help
+    - medical emergency
+    - urgent medical help
+    - emergency contact numbers
+    - heart attack help
+    - stroke emergency
+    - choking help
+    - first aid
+    - emergency procedures
+    - medical crisis
+    - आपातकाल
+    - तत्काल मदद
+
+- intent: ask_who_guidelines
+  examples: |
+    - WHO guidelines for [malaria](disease)
+    - latest WHO recommendations
+    - WHO health updates
+    - WHO disease guidelines
+    - international health guidelines
+    - WHO vaccination guidelines
+    - WHO prevention guidelines
+    - latest health guidelines
+    - WHO के दिशा-निर्देश
+    - विश्व स्वास्थ्य संगठन
+
+- intent: search_by_symptom
+  examples: |
+    - I have [fever](symptom) and [headache](symptom)
+    - experiencing [cough](symptom) and [chest pain](symptom)
+    - [nausea](symptom) and [vomiting](symptom) symptoms
+    - [fatigue](symptom) and [body aches](symptom)
+    - [shortness of breath](symptom) problem
+    - [loss of taste](symptom) and [smell](symptom)
+    - [abdominal pain](symptom)
+    - [joint pain](symptom)
+    - [skin rash](symptom)
+    - [dizziness](symptom)
+    - मुझे बुखार है
+    - सिरदर्द हो रहा है
+
+- intent: thanks
+  examples: |
+    - thanks
+    - thank you
+    - thanks a lot
+    - thank you so much
+    - much appreciated
+    - grateful
+    - thanks for the help
+    - thank you for the information
+    - appreciate it
+    - very helpful
+    - excellent
+    - great help
+    - perfect
+    - wonderful
+    - amazing support
+    - धन्यवाद
+    - शुक्रिया
+    - ধন্যবাদ
+    - thanks buddy
+    - much obliged

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Chatbot - AI Health Assistant</title>
+    <meta name="description" content="Multilingual AI healthcare assistant providing medical information in English, Hindi, and other Indian languages">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            height: 80vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .connection-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status-connected {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .status-disconnected {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .status-connecting {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FF9800;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: #2196F3;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: #f5f5f5;
+            color: #333;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .bot-message strong {
+            color: #2196F3;
+            font-weight: 600;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            padding: 15px 20px;
+            background: #f5f5f5;
+            border-radius: 18px;
+            border-bottom-left-radius: 5px;
+            display: none;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #666;
+            animation: bounce 1.4s ease-in-out infinite both;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .message-input:focus {
+            border-color: #2196F3;
+        }
+
+        .send-button {
+            margin-left: 10px;
+            padding: 15px 25px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            min-width: 80px;
+        }
+
+        .send-button:hover:not(:disabled) {
+            background: #1976D2;
+        }
+
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .quick-suggestions {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            background: #f8f9fa;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .suggestion-btn {
+            padding: 8px 16px;
+            background: #e3f2fd;
+            border: 1px solid #2196F3;
+            color: #2196F3;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .suggestion-btn:hover {
+            background: #2196F3;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .footer {
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .chat-container {
+                height: 90vh;
+                border-radius: 15px;
+            }
+            
+            .chat-header h1 {
+                font-size: 20px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .quick-suggestions {
+                padding: 10px 15px;
+            }
+            
+            .suggestion-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="connection-status status-connecting" id="connectionStatus">
+                Connecting...
+            </div>
+            <h1>🏥 Healthcare Assistant</h1>
+            <p>Multilingual AI health education chatbot</p>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="bot-message">
+                Hello! I'm Dr.Doom, your friendly health education companion. I can help with:
+                • Disease information (malaria, dengue, diabetes, etc.)
+                • Prevention tips and symptoms
+                • Vaccination schedules
+                • Emergency guidance
+                • Support in multiple languages (English, Hindi, Bengali, etc.)
+                
+                What would you like to know today?
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typingIndicator">
+            <div class="typing-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+
+        <div class="quick-suggestions">
+            <button class="suggestion-btn" onclick="sendQuickMessage('Tell me about malaria')">
+                🦟 Malaria Info
+            </button>
+            <button class="suggestion-btn" onclick="sendQuickMessage('What are dengue symptoms?')">
+                🤒 Dengue Symptoms
+            </button>
+            <button class="suggestion-btn" onclick="sendQuickMessage('मलेरिया के बारे में बताएं')">
+                🇮🇳 हिंदी में
+            </button>
+            <button class="suggestion-btn" onclick="sendQuickMessage('Vaccination schedule for babies')">
+                💉 Vaccines
+            </button>
+            <button class="suggestion-btn" onclick="sendQuickMessage('Emergency help')">
+                🚨 Emergency
+            </button>
+        </div>
+
+        <div class="chat-input">
+            <input 
+                type="text" 
+                class="message-input" 
+                id="messageInput" 
+                placeholder="Ask about health, symptoms, diseases... (English/Hindi/Other languages)"
+                maxlength="500"
+            >
+            <button class="send-button" id="sendButton" onclick="sendMessage()">
+                Send
+            </button>
+        </div>
+
+        <div class="footer">
+            ⚠️ This is for educational purposes only. Always consult healthcare professionals for medical advice.
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Will be automatically set based on environment
+        const API_CONFIG = {
+            // Try Render deployment first, fallback to localhost for development
+            RASA_URL: window.location.hostname === 'localhost' 
+                ? 'http://localhost:5005'
+                : 'https://healthcare-chatbot-latest.onrender.com',
+            WEBHOOK_PATH: '/webhooks/rest/webhook',
+            CONNECTION_TIMEOUT: 10000,
+            MAX_RETRIES: 3
+        };
+
+        class HealthcareChatbot {
+            constructor() {
+                this.messageInput = document.getElementById('messageInput');
+                this.sendButton = document.getElementById('sendButton');
+                this.chatMessages = document.getElementById('chatMessages');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                this.connectionStatus = document.getElementById('connectionStatus');
+                
+                this.isConnected = false;
+                this.retryCount = 0;
+                
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.checkConnection();
+            }
+
+            setupEventListeners() {
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                this.messageInput.addEventListener('input', () => {
+                    this.sendButton.disabled = !this.messageInput.value.trim();
+                });
+            }
+
+            async checkConnection() {
+                try {
+                    this.updateConnectionStatus('connecting');
+                    
+                    const response = await fetch(`${API_CONFIG.RASA_URL}/status`, {
+                        method: 'GET',
+                        timeout: API_CONFIG.CONNECTION_TIMEOUT
+                    });
+                    
+                    if (response.ok) {
+                        this.isConnected = true;
+                        this.retryCount = 0;
+                        this.updateConnectionStatus('connected');
+                        console.log('✅ Connected to healthcare chatbot backend');
+                    } else {
+                        throw new Error('Backend not responding');
+                    }
+                } catch (error) {
+                    console.log('❌ Connection failed:', error);
+                    this.handleConnectionError();
+                }
+            }
+
+            handleConnectionError() {
+                this.isConnected = false;
+                this.updateConnectionStatus('disconnected');
+                
+                if (this.retryCount < API_CONFIG.MAX_RETRIES) {
+                    this.retryCount++;
+                    console.log(`🔄 Retrying connection... (${this.retryCount}/${API_CONFIG.MAX_RETRIES})`);
+                    setTimeout(() => this.checkConnection(), 5000 * this.retryCount);
+                } else {
+                    this.showErrorMessage('Unable to connect to the chatbot backend. Please try again later.');
+                }
+            }
+
+            updateConnectionStatus(status) {
+                const statusEl = this.connectionStatus;
+                statusEl.className = 'connection-status';
+                
+                switch (status) {
+                    case 'connected':
+                        statusEl.classList.add('status-connected');
+                        statusEl.textContent = '● Online';
+                        break;
+                    case 'disconnected':
+                        statusEl.classList.add('status-disconnected');
+                        statusEl.textContent = '● Offline';
+                        break;
+                    case 'connecting':
+                        statusEl.classList.add('status-connecting');
+                        statusEl.textContent = '⚡ Connecting...';
+                        break;
+                }
+            }
+
+            async sendMessage(message = null) {
+                const text = message || this.messageInput.value.trim();
+                
+                if (!text || !this.isConnected) {
+                    if (!this.isConnected) {
+                        this.showErrorMessage('Not connected to server. Trying to reconnect...');
+                        this.checkConnection();
+                    }
+                    return;
+                }
+
+                // Add user message to chat
+                this.addMessage(text, 'user');
+                
+                // Clear input and disable send button
+                if (!message) {
+                    this.messageInput.value = '';
+                    this.sendButton.disabled = true;
+                }
+                
+                // Show typing indicator
+                this.showTypingIndicator(true);
+
+                try {
+                    const response = await fetch(`${API_CONFIG.RASA_URL}${API_CONFIG.WEBHOOK_PATH}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            sender: 'web_user',
+                            message: text
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    // Hide typing indicator
+                    this.showTypingIndicator(false);
+
+                    if (data && data.length > 0) {
+                        data.forEach(msg => {
+                            if (msg.text) {
+                                this.addMessage(msg.text, 'bot');
+                            }
+                        });
+                    } else {
+                        this.addMessage("I'm sorry, I didn't understand that. Could you please rephrase your question?", 'bot');
+                    }
+
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    this.showTypingIndicator(false);
+                    this.addMessage('Sorry, there was an error processing your message. Please try again.', 'bot');
+                    
+                    // Check connection status
+                    this.checkConnection();
+                }
+            }
+
+            addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                messageDiv.textContent = text;
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+
+            showTypingIndicator(show) {
+                this.typingIndicator.style.display = show ? 'block' : 'none';
+                if (show) {
+                    this.scrollToBottom();
+                }
+            }
+
+            showErrorMessage(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                
+                this.chatMessages.appendChild(errorDiv);
+                this.scrollToBottom();
+                
+                // Remove error message after 5 seconds
+                setTimeout(() => {
+                    if (errorDiv.parentNode) {
+                        errorDiv.parentNode.removeChild(errorDiv);
+                    }
+                }, 5000);
+            }
+
+            scrollToBottom() {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+        }
+
+        // Global function for quick suggestions
+        function sendQuickMessage(message) {
+            if (window.chatbot) {
+                window.chatbot.sendMessage(message);
+            }
+        }
+
+        // Initialize chatbot when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            window.chatbot = new HealthcareChatbot();
+        });
+    </script>
+</body>
+</html>

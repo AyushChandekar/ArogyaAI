@@ -1,0 +1,148 @@
+version: "3.1"
+
+stories:
+
+- story: greet and disease info request
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_disease_info
+    entities:
+    - disease: "dengue"
+  - action: action_disease_info_improved
+  - action: utter_disclaimer
+
+- story: vaccination schedule inquiry
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_vaccination_schedule
+    entities:
+    - age_group: "babies"
+  - action: action_health_advice_improved
+  - action: utter_disclaimer
+
+- story: outbreak information request
+  steps:
+  - intent: ask_outbreak_info
+    entities:
+    - location: "mumbai"
+  - action: action_health_advice_improved
+  - action: utter_disclaimer
+  - intent: affirm
+  - action: utter_acknowledge
+
+- story: language support inquiry
+  steps:
+  - intent: ask_languages
+  - action: utter_languages
+  - intent: affirm
+  - action: action_language_info_improved
+  - intent: ask_disease_info
+  - action: action_disease_info_improved
+
+- story: out of scope handling
+  steps:
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+  - intent: ask_disease_info
+  - action: action_disease_info_improved
+  - action: utter_disclaimer
+
+- story: bot challenge response
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - intent: ask_disease_info
+  - action: action_disease_info_improved
+
+- story: simple greeting and goodbye
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: multilingual disease inquiry
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_languages
+  - action: utter_languages
+  - intent: ask_disease_info
+    entities:
+    - disease: "malaria"
+  - action: action_language_info_improved
+  - action: action_disease_info_improved
+  - action: utter_disclaimer
+
+- story: vaccination with age specification
+  steps:
+  - intent: ask_vaccination_schedule
+    entities:
+    - age_group: "children"
+  - action: action_vaccination_schedule
+  - intent: ask_disease_info
+    entities:
+    - disease: "polio"
+  - action: action_disease_info_improved
+  - action: utter_disclaimer
+
+- story: prevention tips inquiry
+  steps:
+  - intent: ask_prevention_tips
+    entities:
+    - disease: "malaria"
+  - action: action_prevention_tips
+  - intent: ask_symptoms_info
+    entities:
+    - disease: "malaria"
+  - action: action_disease_info_improved
+
+- story: symptom-based disease inquiry
+  steps:
+  - intent: search_by_symptom
+    entities:
+    - symptom: "fever"
+    - symptom: "headache"
+  - action: action_disease_info_improved
+  - intent: ask_when_see_doctor
+  - action: action_disease_info_improved
+
+- story: emergency help request
+  steps:
+  - intent: ask_emergency_help
+  - action: action_emergency_help
+  - intent: thanks
+  - action: utter_acknowledge
+
+- story: home treatment inquiry
+  steps:
+  - intent: ask_home_treatment
+    entities:
+    - disease: "dengue"
+  - action: action_disease_info_improved
+  - intent: ask_when_see_doctor
+  - action: action_disease_info_improved
+
+- story: who guidelines request
+  steps:
+  - intent: ask_who_guidelines
+    entities:
+    - disease: "tuberculosis"
+  - action: action_disease_info_improved
+  - intent: ask_prevention_tips
+  - action: action_prevention_tips
+
+- story: comprehensive disease flow
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_disease_info
+    entities:
+    - disease: "covid"
+  - action: action_disease_info_improved
+  - intent: ask_prevention_tips
+  - action: action_prevention_tips
+  - intent: thanks
+  - action: utter_acknowledge

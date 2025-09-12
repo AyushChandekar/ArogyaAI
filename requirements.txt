@@ -1,0 +1,7 @@
+rasa==3.6.0
+rasa-sdk==3.6.0
+PyYAML==6.0
+requests==2.31.0
+langdetect==1.0.9
+aiohttp==3.8.5
+typing_extensions
