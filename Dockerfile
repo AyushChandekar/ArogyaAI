@@ -1,5 +1,5 @@
 # Simple Healthcare Chatbot Dockerfile for Render
-FROM python:3.10-slim
+FROM python:3.9-slim
 
 # Set working directory
 WORKDIR /app
@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
 # Upgrade pip 
 RUN pip install --upgrade pip
 
-# Install Rasa with minimal dependencies
-RUN pip install --no-cache-dir rasa==3.6.0 rasa-sdk==3.6.0 requests>=2.28.0
+# Install Rasa with minimal dependencies - force binary wheels
+RUN pip install --only-binary=all --no-cache-dir rasa==3.5.10 rasa-sdk==3.5.1 requests>=2.28.0
 
 # Copy all application files
 COPY . .
