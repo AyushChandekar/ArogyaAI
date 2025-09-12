@@ -28,25 +28,23 @@ if [ ! -d "/app/models" ] || [ -z "$(ls -A /app/models)" ]; then
     echo "📚 Training minimal Rasa model (memory constrained)..."
     cd /app
     
-    # Train with minimal memory usage
-    python -c "
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import warnings
-warnings.filterwarnings('ignore')
-from rasa import train
-train.train(
-    domain='domain.yml',
-    config='config-minimal.yml',
-    training_files=['data/'],
-    output='models/',
-    fixed_model_name='healthcare-model'
-)
-print('✅ Model training completed')
-" 2>/dev/null || {
-    echo "❌ Model training failed, using fallback"
-    exit 1
-}
+    # Set memory optimization flags
+    export TF_CPP_MIN_LOG_LEVEL=3
+    export CUDA_VISIBLE_DEVICES=""
+    
+    # Train using RASA CLI with minimal config
+    echo "Using config: config-minimal.yml"
+    rasa train --config config-minimal.yml --domain domain.yml --data data --out models --fixed-model-name healthcare-model --quiet || {
+        echo "⚠️ Minimal training failed, trying with standard config..."
+        rasa train --config config.yml --domain domain.yml --data data --out models --fixed-model-name healthcare-model --quiet || {
+            echo "❌ All training attempts failed"
+            echo "📋 Checking training data..."
+            ls -la data/ || echo "No data directory found"
+            ls -la . | grep -E "\.(yml|yaml)$" || echo "No YAML files found"
+            exit 1
+        }
+    }
+    echo "✅ Model training completed"
 else
     echo "✅ Using existing trained model"
 fi

@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     git \
     netcat-traditional \
     procps \
+    coreutils \
     && rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip 
@@ -36,7 +37,7 @@ ENV PORT=5005
 EXPOSE 5005
 
 # Make startup scripts executable
-RUN chmod +x /app/start_production.sh /app/start_production_minimal.sh
+RUN chmod +x /app/start_production.sh /app/start_production_minimal.sh /app/start_production_ultra_minimal.sh
 
-# Use the memory-optimized startup script
-CMD ["/app/start_production_minimal.sh"]
+# Use the ultra-minimal startup script that doesn't fail on training issues
+CMD ["/app/start_production_ultra_minimal.sh"]
