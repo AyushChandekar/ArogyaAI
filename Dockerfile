@@ -16,8 +16,11 @@ RUN apt-get update && apt-get install -y \
 # Upgrade pip 
 RUN pip install --upgrade pip
 
-# Install Rasa with minimal dependencies - force binary wheels
-RUN pip install --only-binary=all --no-cache-dir rasa==3.5.10 rasa-sdk==3.5.1 requests>=2.28.0
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install all dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy all application files
 COPY . .
@@ -37,7 +40,7 @@ ENV PORT=10000
 EXPOSE 10000
 
 # Make startup scripts executable
-RUN chmod +x /app/start_production.sh /app/start_production_minimal.sh /app/start_production_ultra_minimal.sh /app/start_production_robust.sh
+RUN chmod +x /app/start_production*.sh
 
-# Use the robust startup script with fallback capability
-CMD ["/app/start_production_robust.sh"]
+# Use the fixed startup script
+CMD ["/app/start_production_fixed.sh"]

@@ -13,7 +13,12 @@ export PYTHONDONTWRITEBYTECODE=1
 cd /app
 
 # Use Render's PORT environment variable or default to 10000
-PORT=${PORT:-10000}
+if [ -z "$PORT" ]; then
+    export PORT=10000
+    echo "🌐 PORT env var not set, using default: $PORT"
+else
+    echo "🌐 Using PORT from environment: $PORT"
+fi
 echo "🌐 Will bind to host 0.0.0.0 on port $PORT"
 
 # Function to start fallback server

@@ -11,7 +11,7 @@ def check_deployment_readiness():
     # Check critical files
     critical_files = {
         "Dockerfile": "Docker configuration with port 10000",
-        "start_production_robust.sh": "Robust startup with fallback",
+        "start_production_fixed.sh": "Fixed startup with explicit port handling",
         "simple_server.py": "Flask fallback server",
         "requirements.txt": "Dependencies with Flask",
         "domain.yml": "Rasa domain configuration",
@@ -38,7 +38,7 @@ def check_deployment_readiness():
         checks = [
             ("PORT=10000", "Port set to 10000 ✅" if "PORT=10000" in content else "❌ Port not set correctly"),
             ("EXPOSE 10000", "Port 10000 exposed ✅" if "EXPOSE 10000" in content else "❌ Port not exposed"),
-            ("start_production_robust.sh", "Robust startup ✅" if "start_production_robust.sh" in content else "❌ Not using robust startup"),
+            ("start_production_fixed.sh", "Fixed startup ✅" if "start_production_fixed.sh" in content else "❌ Not using fixed startup"),
         ]
         
         for check, result in checks:
@@ -48,8 +48,8 @@ def check_deployment_readiness():
     
     # Check startup script
     print("🚀 Startup Script Analysis:")
-    if os.path.exists("start_production_robust.sh"):
-        with open("start_production_robust.sh", "r", encoding="utf-8") as f:
+    if os.path.exists("start_production_fixed.sh"):
+        with open("start_production_fixed.sh", "r", encoding="utf-8") as f:
             content = f.read()
         
         checks = [
