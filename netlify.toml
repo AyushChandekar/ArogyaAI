@@ -13,7 +13,7 @@
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' https://healthcare-chatbot-latest.onrender.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://healthcare-chatbot-latest.onrender.com http://localhost:5005;"
+    Content-Security-Policy = "default-src 'self' https://healthcarechatbot-rmii.onrender.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://healthcarechatbot-rmii.onrender.com http://localhost:5005;"
 
 [[redirects]]
   from = "/*"

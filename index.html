@@ -336,7 +336,7 @@
             // Try Render deployment first, fallback to localhost for development
             RASA_URL: window.location.hostname === 'localhost' 
                 ? 'http://localhost:5005'
-                : 'https://healthcare-chatbot-latest.onrender.com',
+                : 'https://healthcarechatbot-rmii.onrender.com',
             WEBHOOK_PATH: '/webhooks/rest/webhook',
             CONNECTION_TIMEOUT: 10000,
             MAX_RETRIES: 3
@@ -378,7 +378,7 @@
                 try {
                     this.updateConnectionStatus('connecting');
                     
-                    const response = await fetch(`${API_CONFIG.RASA_URL}/status`, {
+                    const response = await fetch(`${API_CONFIG.RASA_URL}/health`, {
                         method: 'GET',
                         timeout: API_CONFIG.CONNECTION_TIMEOUT
                     });
