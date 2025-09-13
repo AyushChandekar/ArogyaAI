@@ -12,6 +12,10 @@ export PYTHONDONTWRITEBYTECODE=1
 
 cd /app
 
+# Use Render's PORT environment variable or default to 10000
+PORT=${PORT:-10000}
+echo "🌐 Will bind to host 0.0.0.0 on port $PORT"
+
 # Try to train model, but don't fail if it doesn't work
 if [ ! -d "/app/models" ] || [ -z "$(ls -A /app/models)" ]; then
     echo "📚 Attempting to train model..."
@@ -25,9 +29,12 @@ fi
 
 # Start Rasa server regardless of training success
 echo "🤖 Starting Rasa Server..."
+echo "🔗 Server will be accessible at http://0.0.0.0:$PORT"
+
+# Start Rasa server with correct syntax (using -i for interface instead of --interface)
 exec rasa run \
-    --port 5005 \
-    --host 0.0.0.0 \
+    -p $PORT \
+    -i 0.0.0.0 \
     --enable-api \
     --cors "*" \
     --debug

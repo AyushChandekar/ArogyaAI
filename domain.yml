@@ -133,6 +133,7 @@ actions:
   - action_emergency_help
   - action_prevention_tips
   - action_language_info_improved
+  - action_health_advice_improved
   - action_default_fallback
 
 session_config:

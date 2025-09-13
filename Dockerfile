@@ -31,13 +31,13 @@ ENV PYTHONUNBUFFERED=1
 ENV RASA_TELEMETRY_ENABLED=false
 ENV TF_CPP_MIN_LOG_LEVEL=3
 ENV PYTHONDONTWRITEBYTECODE=1
-ENV PORT=5005
+ENV PORT=10000
 
 # Expose port
-EXPOSE 5005
+EXPOSE 10000
 
 # Make startup scripts executable
-RUN chmod +x /app/start_production.sh /app/start_production_minimal.sh /app/start_production_ultra_minimal.sh
+RUN chmod +x /app/start_production.sh /app/start_production_minimal.sh /app/start_production_ultra_minimal.sh /app/start_production_robust.sh
 
-# Use the ultra-minimal startup script that doesn't fail on training issues
-CMD ["/app/start_production_ultra_minimal.sh"]
+# Use the robust startup script with fallback capability
+CMD ["/app/start_production_robust.sh"]

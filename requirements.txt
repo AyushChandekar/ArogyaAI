@@ -4,3 +4,5 @@ requests==2.31.0
 langdetect==1.0.9
 aiohttp==3.8.5
 typing_extensions
+flask==2.3.3
+flask-cors==4.0.0
