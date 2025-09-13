@@ -11,14 +11,45 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Simple health responses
+# Enhanced health responses with more medical knowledge
 HEALTH_RESPONSES = {
-    "hello": "Hello! I'm a basic healthcare assistant. How can I help you?",
-    "hi": "Hi there! I'm here to help with basic health information.",
-    "fever": "For fever, rest and stay hydrated. If temperature exceeds 101°F (38.3°C) or persists, consult a doctor.",
-    "headache": "For headaches, try resting in a quiet, dark room and stay hydrated. If severe or persistent, see a healthcare provider.",
-    "cough": "For cough, stay hydrated, use honey (if over 1 year old), and rest. If persistent or with fever, consult a doctor.",
-    "default": "I'm a basic health assistant. Please consult a healthcare professional for specific medical advice."
+    # Greetings
+    "hello": "Hello! I'm Dr.Doom, your friendly health education companion. I can help with prevention tips, symptoms, and vaccination schedules. I support many languages—just type in your preferred language and I'll switch. What would you like to know today?",
+    "hi": "Hi there! I'm here to help with health information, disease prevention, and symptoms guidance. How can I assist you?",
+    "greet": "Hello! I'm Dr.Doom, your friendly health education companion. I can help with prevention tips, symptoms, and vaccination schedules. What would you like to know today?",
+    
+    # Disease Information
+    "malaria": "Malaria is transmitted by infected mosquitoes. Symptoms include fever, chills, headache, and nausea. Prevention: Use mosquito nets, wear long sleeves, and eliminate stagnant water. Seek immediate medical attention if symptoms occur.",
+    "dengue": "Dengue is spread by Aedes mosquitoes. Symptoms: High fever, severe headache, eye pain, muscle pain, rash. Prevention: Remove standing water, use mosquito repellent. Warning signs include persistent vomiting and difficulty breathing - seek immediate care.",
+    "diabetes": "Diabetes affects blood sugar control. Type 2 can be prevented with healthy diet, regular exercise, and weight management. Symptoms include excessive thirst, frequent urination, and fatigue. Regular checkups are important.",
+    "tuberculosis": "TB is a bacterial infection affecting lungs. Symptoms: Persistent cough (>3 weeks), fever, night sweats, weight loss. It's curable with proper medication. Always complete the full course of treatment.",
+    "covid": "COVID-19 prevention: Wear masks, maintain social distance, wash hands frequently, get vaccinated. Symptoms range from mild to severe. Seek medical care if breathing difficulties occur.",
+    "hypertension": "High blood pressure prevention: Reduce salt intake, exercise regularly, maintain healthy weight, limit alcohol, manage stress. Often called 'silent killer' - regular checkups important.",
+    
+    # Symptoms
+    "fever": "Fever is body's response to infection. Management: Rest, stay hydrated, use paracetamol if needed. Seek medical care if fever >101°F (38.3°C) persists >3 days or with severe symptoms.",
+    "headache": "Common causes: dehydration, stress, eye strain. Management: Rest in quiet dark room, stay hydrated, gentle head massage. Seek care for severe, sudden, or recurring headaches.",
+    "cough": "Cough types: Dry (viral) or productive (bacterial). Management: Stay hydrated, honey for throat, rest. See doctor if persistent >3 weeks, bloody sputum, or with fever.",
+    "stomach pain": "Stomach pain can have many causes. Mild pain: Rest, light foods, stay hydrated. Seek immediate care for severe pain, vomiting blood, or signs of appendicitis.",
+    "chest pain": "Chest pain needs evaluation. Could be heart, lung, or muscle related. Seek immediate emergency care for crushing pain, shortness of breath, or pain radiating to arm/jaw.",
+    
+    # Vaccination
+    "vaccine": "Vaccines are safe and effective. Children need vaccines for polio, measles, hepatitis, etc. Adults need flu shots, COVID boosters. Follow your local vaccination schedule.",
+    "vaccination schedule": "Vaccination schedules vary by age. Infants: BCG, Hepatitis B, Polio at birth. Children: Multiple doses of DPT, MMR, etc. Consult healthcare provider for personalized schedule.",
+    
+    # Emergency
+    "emergency": "For medical emergencies in India, call 108. Signs needing immediate care: Difficulty breathing, chest pain, severe bleeding, unconsciousness, severe allergic reactions.",
+    
+    # Prevention
+    "prevention": "General health tips: Balanced diet, regular exercise, adequate sleep, stress management, regular checkups, avoid smoking/excessive alcohol, maintain hygiene.",
+    
+    # Hindi responses
+    "मलेरिया": "मलेरिया मच्छरों से फैलता है। लक्षण: बुखार, ठंड लगना, सिरदर्द। बचाव: मच्छरदानी का उप्योग करें, पानी जमा न होने दें। तुरंत डॉक्टर से मिलें।",
+    "डेंगू": "डेंगू एडीज मच्छर से फैलता है। लक्षण: तेज बुखार, सिरदर्द, मांसपेशियों में दर्द। बचाव: पानी जमा न होने दें, मच्छर भगाने वाली दवा का प्रयोग करें।",
+    "हिंदी": "मैं हिंदी में आपकी सहायता कर सकता हूं। स्वास्थ्य संबंधी कोई भी प्रश्न पूछें - बीमारियों, लक्षणों, या बचाव के बारे में।",
+    
+    # Default
+    "default": "I'm a health education assistant. I can help with disease information, symptoms, prevention tips, and vaccination schedules. Please consult healthcare professionals for specific medical advice."
 }
 
 @app.route('/health', methods=['GET'])
@@ -50,12 +81,36 @@ def chat():
         
         user_message = data['message'].lower()
         
-        # Simple keyword matching
+        # Intelligent keyword matching with priority
         response_text = HEALTH_RESPONSES["default"]
-        for keyword, response in HEALTH_RESPONSES.items():
-            if keyword != "default" and keyword in user_message:
-                response_text = response
-                break
+        
+        # Check for exact matches first
+        if user_message in HEALTH_RESPONSES:
+            response_text = HEALTH_RESPONSES[user_message]
+        else:
+            # Check for partial matches with priority scoring
+            best_match = None
+            best_score = 0
+            
+            for keyword, response in HEALTH_RESPONSES.items():
+                if keyword == "default":
+                    continue
+                
+                # Calculate match score
+                score = 0
+                keyword_lower = keyword.lower()
+                
+                if keyword_lower in user_message:
+                    score = len(keyword_lower)  # Longer keywords get priority
+                elif any(word in user_message for word in keyword_lower.split()):
+                    score = len(keyword_lower) * 0.5  # Partial word match
+                
+                if score > best_score:
+                    best_score = score
+                    best_match = response
+            
+            if best_match:
+                response_text = best_match
         
         return jsonify([{"text": response_text}]), 200
         

@@ -2,10 +2,3 @@
 
 # SPA fallback - redirect all routes to index.html
 /*    /index.html   200
-
-# Security headers
-/*  X-Frame-Options: DENY
-/*  X-Content-Type-Options: nosniff
-/*  X-XSS-Protection: 1; mode=block
-/*  Referrer-Policy: strict-origin-when-cross-origin
-/*  Content-Security-Policy: default-src 'self' https://healthcarechatbot-rmii.onrender.com; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://healthcarechatbot-rmii.onrender.com http://localhost:5005;

@@ -1,0 +1,36 @@
+# Ultra Minimal Healthcare Chatbot Configuration
+# For extremely limited resources (512MB, 2 min timeout)
+recipe: default.v1
+
+assistant_id: healthcare_basic
+
+language: en
+
+# Fastest possible pipeline
+pipeline:
+  - name: WhitespaceTokenizer
+  - name: CountVectorsFeaturizer
+    analyzer: word
+    min_ngram: 1
+    max_ngram: 1  # Only unigrams for speed
+  - name: DIETClassifier
+    epochs: 5  # Very minimal training
+    constrain_similarities: true
+    model_confidence: linear_norm
+    entity_recognition: false  # Disable entity recognition for speed
+  - name: FallbackClassifier
+    threshold: 0.5
+    ambiguity_threshold: 0.2
+
+# Minimal policies
+policies:
+  - name: MemoizationPolicy
+    max_history: 1  # Minimal history
+  - name: RulePolicy
+    core_fallback_threshold: 0.5
+    core_fallback_action_name: "action_default_fallback"
+    enable_fallback_prediction: true
+  - name: TEDPolicy
+    max_history: 2  # Minimal history
+    epochs: 5       # Very fast training
+    constrain_similarities: true

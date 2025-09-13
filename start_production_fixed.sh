@@ -40,12 +40,14 @@ else
     pip install flask flask-cors
 fi
 
-# Try training Rasa model first
-echo "📚 Attempting to train Rasa model..."
-if timeout 120 rasa train --config config-minimal.yml --domain domain.yml --data data --out models --quiet 2>/dev/null; then
-    echo "✅ Model training successful!"
+# Try training Rasa model first with ultra-minimal config
+echo "📚 Attempting to train Rasa model (ultra-minimal)..."
+if timeout 90 rasa train --config config-ultra-minimal.yml --domain domain.yml --data data --out models --quiet 2>/dev/null; then
+    echo "✅ Ultra-minimal model training successful!"
+elif timeout 60 rasa train --config config-minimal.yml --domain domain.yml --data data --out models --quiet 2>/dev/null; then
+    echo "✅ Minimal model training successful!"
 else
-    echo "⚠️ Training failed or timed out after 2 minutes"
+    echo "⚠️ Both training attempts failed or timed out"
     echo "🚀 Will try to start Rasa without trained model"
 fi
 
