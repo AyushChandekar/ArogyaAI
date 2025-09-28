@@ -120,11 +120,23 @@ async def query(request: QueryRequest):
             print("Falling back to direct CSV processing")
             return disease_system.process_query(english_query)
         
-        # Use multilingual processing
-        result = translation_service.process_multilingual_query(
-            user_query, 
-            process_english_query
-        )
+        # Use multilingual processing if translation service is available
+        if translation_service:
+            result = translation_service.process_multilingual_query(
+                user_query, 
+                process_english_query
+            )
+        else:
+            # Fallback to English-only processing
+            english_response = process_english_query(user_query)
+            result = {
+                'original_query': user_query,
+                'detected_language': 'English',
+                'english_query': user_query,
+                'english_response': english_response,
+                'final_response': english_response,
+                'was_translated': False
+            }
         
         # Determine source
         source = "multilingual-rasa" if not result.get('error') else "multilingual-fallback"
@@ -169,8 +181,8 @@ async def health_check():
         "status": "healthy",
         "rasa_available": await check_rasa_health(),
         "diseases_loaded": len(disease_system.get_available_diseases()),
-        "multilingual_support": True,
-        "groq_api_available": True
+        "multilingual_support": translation_service is not None,
+        "groq_api_available": translation_service is not None
     }
 
 @app.get("/api/languages")
