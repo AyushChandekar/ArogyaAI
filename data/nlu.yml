@@ -1,0 +1,750 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - hey there
+    - hi there
+    - greetings
+    - hello ArogyaAI
+    - hi ArogyaAI
+
+- intent: goodbye
+  examples: |
+    - bye
+    - goodbye
+    - see you around
+    - see you later
+    - take care
+    - bye bye
+    - farewell
+    - thanks, bye
+    - goodbye for now
+    - catch you later
+    - cu later
+    
+
+- intent: affirm
+  examples: |
+    - yes
+    - yeah
+    - yep
+    - sure
+    - of course
+    - that sounds good
+    - correct
+    - yes please
+    - absolutely
+    - definitely
+    - right
+
+- intent: deny
+  examples: |
+    - no
+    - nope
+    - not really
+    - no thanks
+    - no thank you
+    - I don't think so
+    - don't want that
+    - no way
+    - not interested
+    - negative
+
+- intent: ask_disease_info
+  examples: |
+    - tell me about [asthma](disease)
+    - what is [diabetes](disease)
+    - I want to know about [anxiety](disease)
+    - give me information about [acne](disease)
+    - can you help me with [arthritis](disease)
+    - I need info on [baldness](disease)
+    - tell me everything about [breast cancer](disease)
+    - what do you know about [cold](disease)
+    - information about [cough](disease)
+    - tell me about [bipolar disorder](disease)
+    - what is [bipolar disorder](disease)
+    - information about [body pain](disease)
+    - tell me about [body swelling](disease)
+    - I have [asthma](disease)
+    - I'm suffering from [anxiety](disease)
+    - I think I have [acne](disease)
+    - my friend has [arthritis](disease)
+    - help me understand [autism](disease)
+    - what can you tell me about [boils](disease)
+    - I want general information about [anaemia](disease)
+    - tell me about [abdominal hernia](disease)
+    - what is [brain tumor](disease)
+    - information about [lung cancer](disease)
+    - help with [kidney stones](disease)
+    - what about [heart failure](disease)
+    - tell me about [pneumonia](disease)
+    - I need info on [tuberculosis](disease)
+    - what is [malaria](disease)
+    - information about [hepatitis](disease)
+    - tell me about [stroke](disease)
+    - what is [epilepsy](disease)
+    - help with [migraine](disease)
+    - information about [osteoporosis](disease)
+    - tell me about [thyroid cancer](disease)
+    - what is [parkinson's disease](disease)
+    - help with [alzheimer's disease](disease)
+    - information about [multiple sclerosis](disease)
+    - tell me about [crohn's disease](disease)
+    - what is [celiac disease](disease)
+    - help with [fibromyalgia](disease)
+    - information about [psoriasis](disease)
+    - tell me about [eczema](disease)
+    - what is [vitiligo](disease)
+    - help with [rosacea](disease)
+    - information about [dermatitis](disease)
+    - tell me about [conjunctivitis](disease)
+    - what is [glaucoma](disease)
+    - help with [cataract](disease)
+    - information about [macular degeneration](disease)
+    - tell me about [tonsillitis](disease)
+    - what is [sinusitis](disease)
+    - help with [bronchitis](disease)
+    - information about [copd](disease)
+    - tell me about [emphysema](disease)
+    - what is [warts](disease)
+    - tell me about [warts](disease)
+    - information about [vitiligo](disease)
+    - help with [dermatitis](disease)
+    - what about [rosacea](disease)
+    - tell me about [conjunctivitis](disease)
+    - information about [tonsillitis](disease)
+    - what is [sinusitis](disease)
+    - help with [urticaria](disease)
+    - tell me about [hemorrhoids](disease)
+    - what is [varicose veins](disease)
+    - information about [diverticulitis](disease)
+    - help with [gallstones](disease)
+    - tell me about [scabies](disease)
+    - information about [prostate cancer](disease)
+    - what is [bladder cancer](disease)
+    - help with [ovarian cancer](disease)
+    - tell me about [liver cancer](disease)
+    - information about [colorectal cancer](disease)
+    - what is [stomach cancer](disease)
+    - help with [pancreatic cancer](disease)
+    - tell me about [esophageal cancer](disease)
+    - information about [oral cancer](disease)
+    - what is [skin cancer](disease)
+    - help with [bone cancer](disease)
+    - tell me about [leukemia](disease)
+    - information about [lymphoma](disease)
+    - what is [hodgkin's lymphoma](disease)
+    - help with [multiple myeloma](disease)
+    - tell me about [sarcoidosis](disease)
+    - information about [fibromyalgia](disease)
+    - what is [lupus](disease)
+    - help with [rheumatoid arthritis](disease)
+    - tell me about [osteoarthritis](disease)
+    - information about [osteoporosis](disease)
+    - what is [gout](disease)
+    - help with [anemia](disease)
+    - tell me about [hypothyroidism](disease)
+    - information about [hyperthyroidism](disease)
+    - what is [cushing syndrome](disease)
+    - tell me about [abscess](disease)
+    - information about [achalasia](disease)
+    - what is [acinic cell carcinoma](disease)
+    - help with [acute bronchospasm](disease)
+    - tell me about [acute otitis media](disease)
+    - information about [acute pancreatitis](disease)
+    - what is [acute sinusitis](disease)
+    - help with [adenoid cystic carcinoma](disease)
+    - tell me about [alcohol intoxication](disease)
+    - information about [amyloidosis](disease)
+    - what is [angle-closure glaucoma](disease)
+    - help with [antimicrobial drugs poisoning](disease)
+    - tell me about [astigmatism](disease)
+    - information about [atelectasis](disease)
+    - what is [adhd](disease)
+    - help with [autism spectrum disorder](disease)
+    - tell me about [benzodiazepine use disorder](disease)
+    - information about [blackheads](disease)
+    - what is [bladder disorder](disease)
+    - help with [bone spur of the calcaneus](disease)
+    - tell me about [brain abscess](disease)
+    - information about [bronchiectasis](disease)
+    - what is [bronchopneumonia](disease)
+    - help with [carbamazepine toxicity](disease)
+    - tell me about [carcinoid tumor](disease)
+    - information about [carpal tunnel syndrome](disease)
+    - what is [cellulitis](disease)
+    - help with [cervicitis](disease)
+    - tell me about [chalazion](disease)
+    - information about [chemical poisoning](disease)
+    - what is [chikungunya](disease)
+    - help with [chlamydia infection](disease)
+    - tell me about [cholecystitis](disease)
+    - information about [cholera](disease)
+
+- intent: ask_home_treatment
+  examples: |
+    - home treatment for [asthma](disease)
+    - natural remedies for [acne](disease)
+    - home cure for [baldness](disease)
+    - traditional treatment for [arthritis](disease)
+    - ayurvedic treatment for [anxiety](disease)
+    - home remedies for [cold](disease)
+    - natural treatment for [cough](disease)
+    - herbal treatment for [boils](disease)
+    - what are home treatments for [anaemia](disease)
+    - how to treat [asthma](disease) at home
+    - natural ways to treat [diabetes](disease)
+    - home solutions for [autism](disease)
+    - traditional medicine for [breast cancer](disease)
+    - home remedies for [migraine](disease)
+    - natural treatment for [psoriasis](disease)
+    - ayurvedic remedies for [eczema](disease)
+    - home cure for [constipation](disease)
+    - herbal treatment for [gastritis](disease)
+    - natural remedies for [insomnia](disease)
+    - home treatment for [hypertension](disease)
+    - traditional remedies for [kidney stones](disease)
+    - home treatment
+    - natural remedies
+    - ayurvedic treatment
+    - herbal medicine
+    - traditional treatment
+
+- intent: ask_symptoms
+  examples: |
+    - symptoms of [asthma](disease)
+    - signs of [diabetes](disease)
+    - what are symptoms of [anxiety](disease)
+    - how do I know if I have [acne](disease)
+    - signs and symptoms of [arthritis](disease)
+    - symptoms of [baldness](disease)
+    - what are the signs of [breast cancer](disease)
+    - symptoms of [cold](disease)
+    - how to identify [cough](disease)
+    - warning signs of [anaemia](disease)
+    - early symptoms of [autism](disease)
+    - symptoms of [boils](disease)
+    - symptoms of [brain tumor](disease)
+    - signs of [heart failure](disease)
+    - what are symptoms of [pneumonia](disease)
+    - symptoms of [kidney stones](disease)
+    - signs of [stroke](disease)
+    - symptoms of [migraine](disease)
+    - warning signs of [hepatitis](disease)
+    - symptoms of [tuberculosis](disease)
+    - signs of [malaria](disease)
+    - symptoms of [epilepsy](disease)
+    - symptoms of [warts](disease)
+    - signs of [dermatitis](disease)
+    - what are symptoms of [vitiligo](disease)
+    - symptoms of [rosacea](disease)
+    - warning signs of [psoriasis](disease)
+    - symptoms of [eczema](disease)
+    - signs of [conjunctivitis](disease)
+    - symptoms of [glaucoma](disease)
+    - what are symptoms of [cataract](disease)
+    - symptoms of [tonsillitis](disease)
+    - signs of [sinusitis](disease)
+    - symptoms of [bronchitis](disease)
+    - what are symptoms of [copd](disease)
+    - symptoms of [emphysema](disease)
+    - symptoms of [scabies](disease)
+    - signs of [prostate cancer](disease)
+    - what are symptoms of [bladder cancer](disease)
+    - symptoms of [ovarian cancer](disease)
+    - warning signs of [liver cancer](disease)
+    - symptoms of [colorectal cancer](disease)
+    - signs of [stomach cancer](disease)
+    - symptoms of [pancreatic cancer](disease)
+    - what are symptoms of [esophageal cancer](disease)
+    - symptoms of [oral cancer](disease)
+    - signs of [skin cancer](disease)
+    - symptoms of [bone cancer](disease)
+    - what are symptoms of [leukemia](disease)
+    - symptoms of [lymphoma](disease)
+    - signs of [hodgkin's lymphoma](disease)
+    - symptoms of [multiple myeloma](disease)
+    - what are symptoms of [sarcoidosis](disease)
+    - symptoms of [fibromyalgia](disease)
+    - signs of [lupus](disease)
+    - symptoms of [rheumatoid arthritis](disease)
+    - what are symptoms of [osteoarthritis](disease)
+    - symptoms of [osteoporosis](disease)
+    - signs of [gout](disease)
+    - symptoms of [anemia](disease)
+    - what are symptoms of [diabetes](disease)
+    - symptoms of [hypothyroidism](disease)
+    - signs of [hyperthyroidism](disease)
+    - symptoms of [cushing syndrome](disease)
+    - what are symptoms of [addison's disease](disease)
+    - symptoms of [abscess](disease)
+    - signs of [achalasia](disease)
+    - symptoms of [acinic cell carcinoma](disease)
+    - signs of [acute bronchospasm](disease)
+    - symptoms of [acute otitis media](disease)
+    - signs of [acute pancreatitis](disease)
+    - symptoms of [acute sinusitis](disease)
+    - signs of [adenoid cystic carcinoma](disease)
+    - symptoms of [alcohol intoxication](disease)
+    - signs of [amyloidosis](disease)
+    - symptoms of [angle-closure glaucoma](disease)
+    - signs of [antimicrobial drugs poisoning](disease)
+    - symptoms of [astigmatism](disease)
+    - signs of [atelectasis](disease)
+    - symptoms of [adhd](disease)
+    - signs of [autism spectrum disorder](disease)
+    - symptoms of [benzodiazepine use disorder](disease)
+    - signs of [blackheads](disease)
+    - symptoms of [bladder disorder](disease)
+    - signs of [bone spur of the calcaneus](disease)
+    - symptoms of [brain abscess](disease)
+    - signs of [bronchiectasis](disease)
+    - symptoms of [bronchopneumonia](disease)
+    - signs of [carbamazepine toxicity](disease)
+    - symptoms of [carcinoid tumor](disease)
+    - signs of [carpal tunnel syndrome](disease)
+    - symptoms of [cellulitis](disease)
+    - signs of [cervicitis](disease)
+    - symptoms of [chalazion](disease)
+    - signs of [chemical poisoning](disease)
+    - symptoms of [chikungunya](disease)
+    - signs of [chlamydia infection](disease)
+    - symptoms of [cholecystitis](disease)
+    - signs of [cholera](disease)
+    - symptoms of [chronic fatigue syndrome](disease)
+    - signs of [chronic gastritis](disease)
+    - symptoms of [chronic hepatitis](disease)
+    - signs of [chronic kidney disease](disease)
+    - symptoms of [cirrhosis of liver](disease)
+    - signs of [clostridium difficile infection](disease)
+    - symptoms of [cluster headache](disease)
+    - signs of [colic in babies](disease)
+    - symptoms of [common cold](disease)
+    - signs of [constipation in adults](disease)
+    - symptoms of [coronary artery disease](disease)
+    - signs of [cryptococcosis](disease)
+    - symptoms of [cystic fibrosis](disease)
+    - signs of [dandruff](disease)
+    - symptoms of [deafness](disease)
+    - signs of [dehydration](disease)
+    - symptoms of [dengue fever](disease)
+    - signs of [diabetes insipidus](disease)
+    - symptoms of [diabetic ketoacidosis](disease)
+    - signs of [diabetic retinopathy](disease)
+    - symptoms of [diarrhea due to indigestion](disease)
+    - signs of [diarrhoea](disease)
+    - symptoms of [diphtheria](disease)
+    - signs of [diverticulitis](disease)
+    - symptoms of [down syndrome](disease)
+    - signs of [drug allergy](disease)
+    - symptoms of [dry eye syndrome](disease)
+    - signs of [dysentery](disease)
+    - symptoms of [ear infection](disease)
+    - signs of [ebola virus disease](disease)
+    - symptoms of [emphysema](disease)
+    - signs of [encephalitis](disease)
+    - symptoms of [epistaxis](disease)
+    - signs of [erectile dysfunction](disease)
+    - symptoms of [esophagitis](disease)
+    - signs of [exhaustion due to overwork](disease)
+    - symptoms of [eye aching](disease)
+    - signs of [facial palsy](disease)
+    - symptoms of [fainting](disease)
+    - signs of [fatty liver disease](disease)
+    - symptoms of [feet sole having cracks](disease)
+    - signs of [fever of unknown origin](disease)
+    - symptoms of [feverishness](disease)
+    - signs of [flatulence](disease)
+    - symptoms of [food poisoning](disease)
+    - signs of [fungal nail infection](disease)
+    - symptoms of [gastric ulcer](disease)
+    - signs of [gastroenteritis](disease)
+    - symptoms of [gerd](disease)
+    - signs of [genital herpes](disease)
+    - symptoms of [genital warts](disease)
+    - signs of [giddiness](disease)
+    - symptoms of [giddiness due to blood pressure](disease)
+    - signs of [goiter](disease)
+    - symptoms of [gonorrhea](disease)
+    - signs of [gouty pains](disease)
+    - symptoms of [graves disease](disease)
+    - signs of [guillain barre syndrome](disease)
+    - what symptoms should I look for
+    - signs to watch out for
+    - how do I know if I have it
+    - symptoms
+    - signs
+    - warning signs
+
+- intent: ask_causes
+  examples: |
+    - what causes [asthma](disease)
+    - why do people get [diabetes](disease)
+    - causes of [anxiety](disease)
+    - what leads to [acne](disease)
+    - reasons for [arthritis](disease)
+    - why does [baldness](disease) happen
+    - what causes [breast cancer](disease)
+    - causes of [cold](disease)
+    - why do I have [cough](disease)
+    - what leads to [anaemia](disease)
+    - causes of [autism](disease)
+    - why do [boils](disease) occur
+    - what causes [abscess](disease)
+    - causes of [achalasia](disease)
+    - why does [acinic cell carcinoma](disease) happen
+    - what leads to [acute bronchospasm](disease)
+    - causes of [acute otitis media](disease)
+    - why do people get [acute pancreatitis](disease)
+    - what causes [acute sinusitis](disease)
+    - causes of [adenoid cystic carcinoma](disease)
+    - why does [alcohol intoxication](disease) occur
+    - what leads to [amyloidosis](disease)
+    - causes of [angle-closure glaucoma](disease)
+    - why does [antimicrobial drugs poisoning](disease) happen
+    - what causes [astigmatism](disease)
+    - causes of [atelectasis](disease)
+    - why do people get [adhd](disease)
+    - what leads to [autism spectrum disorder](disease)
+    - causes of [benzodiazepine use disorder](disease)
+    - why do [blackheads](disease) occur
+    - what causes [bladder disorder](disease)
+    - causes of [bone spur of the calcaneus](disease)
+    - why does [brain abscess](disease) happen
+    - what leads to [bronchiectasis](disease)
+    - causes of [bronchopneumonia](disease)
+    - why do people get [carbamazepine toxicity](disease)
+    - what causes [carcinoid tumor](disease)
+    - causes of [carpal tunnel syndrome](disease)
+    - why does [cellulitis](disease) occur
+    - what leads to [cervicitis](disease)
+    - causes of [chalazion](disease)
+    - why do people get [chemical poisoning](disease)
+    - what causes [chikungunya](disease)
+    - causes of [chlamydia infection](disease)
+    - why does [cholecystitis](disease) happen
+    - what leads to [cholera](disease)
+    - causes of [chronic fatigue syndrome](disease)
+    - why do people get [chronic gastritis](disease)
+    - what causes [chronic hepatitis](disease)
+    - causes of [chronic kidney disease](disease)
+    - why does [cirrhosis of liver](disease) occur
+    - what leads to [clostridium difficile infection](disease)
+    - causes of [cluster headache](disease)
+    - why do people get [colic in babies](disease)
+    - what causes [common cold](disease)
+    - causes of [constipation in adults](disease)
+    - why does [coronary artery disease](disease) happen
+    - what leads to [cryptococcosis](disease)
+    - causes of [cystic fibrosis](disease)
+    - why do people get [dandruff](disease)
+    - what causes [deafness](disease)
+    - causes of [dehydration](disease)
+    - why does [dengue fever](disease) occur
+    - what leads to [diabetes insipidus](disease)
+    - causes of [diabetic ketoacidosis](disease)
+    - why do people get [diabetic retinopathy](disease)
+    - what causes [diarrhea due to indigestion](disease)
+    - causes of [diarrhoea](disease)
+    - why does [diphtheria](disease) happen
+    - what leads to [diverticulitis](disease)
+    - causes of [down syndrome](disease)
+    - why do people get [drug allergy](disease)
+    - what causes [dry eye syndrome](disease)
+    - causes of [dysentery](disease)
+    - what causes this
+    - why does this happen
+    - what are the reasons
+    - causes
+    - reasons
+    - why
+
+- intent: ask_prevention
+  examples: |
+    - how to prevent [asthma](disease)
+    - prevention of [diabetes](disease)
+    - how can I avoid [anxiety](disease)
+    - prevent [acne](disease)
+    - ways to prevent [arthritis](disease)
+    - how to avoid [baldness](disease)
+    - prevention of [breast cancer](disease)
+    - how to prevent [cold](disease)
+    - avoid [cough](disease)
+    - prevent [anaemia](disease)
+    - how to prevent [autism](disease)
+    - avoid [boils](disease)
+    - how to prevent this
+    - prevention methods
+    - how can I avoid this
+    - prevention
+    - precautions
+    - how to avoid
+
+- intent: ask_awareness
+  examples: |
+    - awareness about [asthma](disease)
+    - facts about [diabetes](disease)
+    - what should I know about [anxiety](disease)
+    - awareness of [acne](disease)
+    - important facts about [arthritis](disease)
+    - awareness about [baldness](disease)
+    - facts about [breast cancer](disease)
+    - awareness of [cold](disease)
+    - what to know about [cough](disease)
+    - awareness about [anaemia](disease)
+    - facts about [autism](disease)
+    - awareness of [boils](disease)
+    - important facts
+    - what should I know
+    - awareness
+    - facts
+    - things to know
+
+- intent: ask_who_guidelines
+  examples: |
+    - WHO guidelines for [asthma](disease)
+    - world health organization recommendations for [diabetes](disease)
+    - WHO advice for [anxiety](disease)
+    - medical guidelines for [acne](disease)
+    - WHO recommendations for [arthritis](disease)
+    - official guidelines for [baldness](disease)
+    - WHO guidelines for [breast cancer](disease)
+    - health organization advice for [cold](disease)
+    - WHO recommendations for [cough](disease)
+    - guidelines for [anaemia](disease)
+    - WHO advice for [autism](disease)
+    - official recommendations for [boils](disease)
+    - WHO guidelines
+    - medical guidelines
+    - official recommendations
+    - health organization advice
+
+- intent: ask_more_info
+  examples: |
+    - tell me more
+    - more information
+    - what else
+    - anything else
+    - more details
+    - can you tell me more
+    - I want to know more
+    - give me more info
+    - more about this
+    - additional information
+    - tell me more about that
+    - what other information do you have
+    - more
+
+- intent: ask_different_aspect
+  examples: |
+    - what about symptoms
+    - how about treatment
+    - what about causes
+    - tell me about prevention
+    - what about home remedies
+    - how about WHO guidelines
+    - what about awareness
+    - tell me the symptoms
+    - show me the treatment
+    - what are the causes
+    - tell me prevention methods
+
+- intent: compare_diseases
+  examples: |
+    - compare [asthma](disease) and [anxiety](comparison_disease)
+    - difference between [diabetes](disease) and [anaemia](comparison_disease)
+    - [acne](disease) vs [boils](comparison_disease)
+    - what's different between [arthritis](disease) and [body pain](comparison_disease)
+    - compare treatment for [asthma](disease) and [cold](comparison_disease)
+    - difference in symptoms of [anxiety](disease) and [autism](comparison_disease)
+    - [baldness](disease) versus [body heat](comparison_disease)
+    - compare causes of [breast cancer](disease) and [bone cancer](comparison_disease)
+    - what's the difference
+    - compare these diseases
+    - how are they different
+    - similarities and differences
+
+- intent: ask_comprehensive_info
+  examples: |
+    - tell me everything about [asthma](disease)
+    - give me complete information about [diabetes](disease)
+    - brief about [anxiety](disease)
+    - full information about [acne](disease)
+    - overview of [arthritis](disease)
+    - tell me all about [baldness](disease)
+    - comprehensive information about [breast cancer](disease)
+    - everything about [cold](disease)
+    - full details about [cough](disease)
+    - complete guide about [anaemia](disease)
+    - tell me everything regarding [autism](disease)
+    - brief overview of [boils](disease)
+    - give me full info on [asthma](disease)
+    - complete information on [diabetes](disease)
+    - tell me all details about [anxiety](disease)
+    - everything I need to know about [acne](disease)
+    - comprehensive guide to [arthritis](disease)
+    - full overview of [baldness](disease)
+    - tell me everything you know about [breast cancer](disease)
+    - complete details on [cold](disease)
+    - all information about [cough](disease)
+    - detailed information about [anaemia](disease)
+    - complete guide on [autism](disease)
+    - everything about [boils](disease)
+    - full info about [asthma](disease)
+    - complete overview of [diabetes](disease)
+    - tell me all you know about [anxiety](disease)
+    - comprehensive details about [acne](disease)
+    - tell me everything about [brain tumor](disease)
+    - comprehensive information about [lung cancer](disease)
+    - full details about [heart failure](disease)
+    - complete guide about [kidney stones](disease)
+    - everything about [pneumonia](disease)
+    - brief about [tuberculosis](disease)
+    - full information about [malaria](disease)
+    - overview of [hepatitis](disease)
+    - tell me all about [stroke](disease)
+    - comprehensive information about [epilepsy](disease)
+    - everything about [migraine](disease)
+    - complete details about [osteoporosis](disease)
+    - full info about [thyroid cancer](disease)
+    - brief overview of [parkinson's disease](disease)
+    - comprehensive guide to [multiple sclerosis](disease)
+    - everything about [crohn's disease](disease)
+    - complete information about [celiac disease](disease)
+    - full details about [fibromyalgia](disease)
+    - overview of [psoriasis](disease)
+    - tell me everything about [eczema](disease)
+    - comprehensive information about [vitiligo](disease)
+    - everything about [conjunctivitis](disease)
+    - complete guide about [glaucoma](disease)
+    - full information about [cataract](disease)
+    - brief about [macular degeneration](disease)
+    - overview of [tonsillitis](disease)
+    - everything about [sinusitis](disease)
+    - comprehensive details about [bronchitis](disease)
+    - complete information about [copd](disease)
+    - full overview of [emphysema](disease)
+    - tell me everything about [scabies](disease)
+    - comprehensive information about [prostate cancer](disease)
+    - full details about [bladder cancer](disease)
+    - complete guide about [ovarian cancer](disease)
+    - everything about [liver cancer](disease)
+    - brief about [colorectal cancer](disease)
+    - full information about [stomach cancer](disease)
+    - overview of [pancreatic cancer](disease)
+    - tell me all about [esophageal cancer](disease)
+    - comprehensive information about [oral cancer](disease)
+    - everything about [skin cancer](disease)
+    - complete details about [bone cancer](disease)
+    - full info about [leukemia](disease)
+    - brief overview of [lymphoma](disease)
+    - comprehensive guide to [hodgkin's lymphoma](disease)
+    - everything about [multiple myeloma](disease)
+    - complete information about [sarcoidosis](disease)
+    - full details about [fibromyalgia](disease)
+    - overview of [lupus](disease)
+    - tell me everything about [rheumatoid arthritis](disease)
+    - comprehensive information about [osteoarthritis](disease)
+    - everything about [osteoporosis](disease)
+    - complete guide about [gout](disease)
+    - full information about [anemia](disease)
+    - brief about [hypothyroidism](disease)
+    - overview of [hyperthyroidism](disease)
+    - everything about [cushing syndrome](disease)
+    - tell me everything about [abscess](disease)
+    - comprehensive information about [achalasia](disease)
+    - full details about [acinic cell carcinoma](disease)
+    - complete guide about [acute bronchospasm](disease)
+    - everything about [acute otitis media](disease)
+    - brief about [acute pancreatitis](disease)
+    - full information about [acute sinusitis](disease)
+    - overview of [adenoid cystic carcinoma](disease)
+    - tell me all about [alcohol intoxication](disease)
+    - comprehensive information about [amyloidosis](disease)
+    - everything about [angle-closure glaucoma](disease)
+    - complete details about [antimicrobial drugs poisoning](disease)
+    - full info about [astigmatism](disease)
+    - brief overview of [atelectasis](disease)
+    - comprehensive guide to [adhd](disease)
+    - everything about [autism spectrum disorder](disease)
+    - complete information about [benzodiazepine use disorder](disease)
+    - full details about [blackheads](disease)
+    - overview of [bladder disorder](disease)
+    - tell me everything about [bone spur of the calcaneus](disease)
+    - comprehensive information about [brain abscess](disease)
+    - everything about [bronchiectasis](disease)
+    - complete guide about [bronchopneumonia](disease)
+    - full information about [carbamazepine toxicity](disease)
+    - brief about [carcinoid tumor](disease)
+    - overview of [carpal tunnel syndrome](disease)
+    - everything about [cellulitis](disease)
+    - comprehensive details about [cervicitis](disease)
+    - complete information about [chalazion](disease)
+    - full overview of [chemical poisoning](disease)
+    - tell me everything about [chikungunya](disease)
+    - comprehensive information about [chlamydia infection](disease)
+    - everything about [cholecystitis](disease)
+    - complete guide about [cholera](disease)
+    - everything
+    - tell me everything
+    - complete information
+    - full details
+    - comprehensive information
+    - brief
+    - full
+    - overview
+    - all about it
+    - complete guide
+    - detailed information
+    - all information
+    - comprehensive guide
+    - full overview
+    - complete details
+    - all details
+
+- intent: ask_follow_up
+  examples: |
+    - what about [anxiety](disease)
+    - tell me about [asthma](disease) now
+    - how about [diabetes](disease)
+    - what about [acne](disease) treatment
+    - [arthritis](disease) symptoms please
+    - now tell me about [baldness](disease)
+    - what about causes of [breast cancer](disease)
+    - [cold](disease) prevention methods
+    - how about [cough](disease) remedies
+    - what about [anaemia](disease) awareness
+    - tell me [autism](disease) guidelines
+    - [boils](disease) information
+
+- intent: out_of_scope
+  examples: |
+    - what's the weather
+    - tell me a joke
+    - what's your favorite color
+    - how old are you
+    - what's for dinner
+    - play music
+    - call my mom
+    - book a flight
+    - what time is it
+    - where are you from
+    - tell me about politics
+    - sports news
+    - stock market
+    - recipe for cake
+
+- intent: nlu_fallback
+  examples: |
+    - asdkjfh
+    - qwerty
+    - blah blah
+    - random text
+    - gibberish

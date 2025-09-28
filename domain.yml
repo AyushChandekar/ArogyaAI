@@ -1,0 +1,128 @@
+version: "3.1"
+
+# Conversation session configuration
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+# Intents - what users can say
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - ask_disease_info
+  - ask_comprehensive_info
+  - ask_home_treatment  
+  - ask_symptoms
+  - ask_causes
+  - ask_prevention
+  - ask_awareness
+  - ask_who_guidelines
+  - ask_more_info
+  - ask_different_aspect
+  - compare_diseases
+  - ask_follow_up
+  - out_of_scope
+  - nlu_fallback
+
+# Entities - key information extracted from user messages
+entities:
+  - disease
+  - info_type
+  - comparison_disease
+
+# Slots - memory for the conversation
+slots:
+  current_disease:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: disease
+  
+  current_info_type:
+    type: categorical
+    values: 
+      - overview
+      - comprehensive
+      - home_treatment
+      - symptoms  
+      - causes
+      - prevention
+      - awareness
+      - who_guidelines
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: info_type
+  
+  last_provided_info:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: custom
+    
+  conversation_context:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: custom
+
+# Responses - what the bot can say
+responses:
+  utter_greet:
+    - text: "Hello! I'm ArogyaAI, your intelligent health assistant. I can provide information about various diseases including symptoms, causes, home treatments, and WHO guidelines. How can I help you today?"
+    - text: "Hi there! 👋 I'm ArogyaAI. I can help you with comprehensive disease information. What would you like to know about?"
+
+  utter_goodbye:
+    - text: "Goodbye! Stay healthy and take care! 🏥💚"
+    - text: "Take care! Remember to consult healthcare professionals for serious concerns. Goodbye! 👋"
+
+  utter_ask_disease_clarification:
+    - text: "I can help with that! Which disease are you asking about?"
+    - text: "Could you please specify which disease you'd like information about?"
+
+  utter_ask_info_type_clarification:
+    - text: "What would you like to know about {current_disease}? I can provide information about:\n• Home treatments 🏠\n• Symptoms ⚠️\n• Causes 🔍\n• Prevention 🛡️\n• Awareness 💡\n• WHO Guidelines 🏛️"
+    
+  utter_disease_options:
+    - text: "I can help with information about 340+ diseases including: Acne, Anxiety, Asthma, Arthritis, Autism, Baldness, Breast Cancer, Brain Tumor, Lung Cancer, Heart Failure, Kidney Stones, Pneumonia, Tuberculosis, Malaria, Hepatitis, Stroke, Epilepsy, Migraine, Diabetes, Hypertension, Osteoporosis, Thyroid Cancer, Parkinson's Disease, Multiple Sclerosis, Crohn's Disease, Celiac Disease, Fibromyalgia, Psoriasis, Eczema, Vitiligo, Conjunctivitis, Glaucoma, Cataract, and many more. Which one interests you?"
+    - text: "I have comprehensive information about hundreds of diseases from common conditions like Cold, Cough, Fever, Headache to serious conditions like Cancer, Heart Disease, Stroke, and Neurological disorders. What would you like to know about?"
+    - text: "My database includes 340+ diseases covering: Respiratory (Asthma, COPD, Pneumonia), Cardiovascular (Heart Attack, Hypertension), Neurological (Epilepsy, Migraine, Parkinson's), Cancer (Lung, Breast, Brain), Digestive (Gastritis, Crohn's), Skin (Psoriasis, Eczema), Eye (Glaucoma, Cataract), and many more categories. Which disease interests you?"
+
+  utter_more_info_options:
+    - text: "Would you like to know more about {current_disease}? I can tell you about:\n• Home treatments 🏠\n• Symptoms ⚠️ \n• Causes 🔍\n• Prevention 🛡️\n• Awareness 💡\n• WHO Guidelines 🏛️"
+
+  utter_fallback:
+    - text: "I'm sorry, I didn't understand that. Could you rephrase your question about diseases?"
+    - text: "I couldn't understand that. Try asking about disease symptoms, treatments, or causes."
+
+  utter_out_of_scope:
+    - text: "I'm specialized in providing disease information. Please ask about symptoms, treatments, causes, or prevention of diseases."
+
+  utter_default:
+    - text: "I'm here to help with disease information. What would you like to know?"
+
+# Actions - custom functions the bot can perform
+actions:
+  - action_provide_disease_info
+  - action_provide_comprehensive_info
+  - action_provide_home_treatment
+  - action_provide_symptoms
+  - action_provide_causes  
+  - action_provide_prevention
+  - action_provide_awareness
+  - action_provide_who_guidelines
+  - action_compare_diseases
+  - action_suggest_info_types
+  - action_handle_follow_up
+  - action_fallback_with_suggestions
+  - validate_disease_form
+
+# Forms for guided conversations
+forms:
+  disease_info_form:
+    required_slots:
+      - current_disease
+      - current_info_type

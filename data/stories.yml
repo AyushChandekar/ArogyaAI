@@ -1,0 +1,336 @@
+version: "3.1"
+
+stories:
+
+- story: basic greeting
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- story: goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: disease info request with specific disease
+  steps:
+  - intent: ask_disease_info
+    entities:
+    - disease: "asthma"
+  - slot_was_set:
+    - current_disease: "asthma"
+  - action: action_suggest_info_types
+
+- story: specific home treatment request
+  steps:
+  - intent: ask_home_treatment
+    entities:
+    - disease: "asthma"
+  - slot_was_set:
+    - current_disease: "asthma"
+    - current_info_type: "home_treatment"
+  - action: action_provide_home_treatment
+  - action: utter_more_info_options
+
+- story: specific symptoms request
+  steps:
+  - intent: ask_symptoms
+    entities:
+    - disease: "anxiety"
+  - slot_was_set:
+    - current_disease: "anxiety"
+    - current_info_type: "symptoms"
+  - action: action_provide_symptoms
+  - action: utter_more_info_options
+
+- story: ask causes with follow up
+  steps:
+  - intent: ask_causes
+    entities:
+    - disease: "acne"
+  - slot_was_set:
+    - current_disease: "acne"
+    - current_info_type: "causes"
+  - action: action_provide_causes
+  - action: utter_more_info_options
+  - intent: ask_different_aspect
+  - action: action_suggest_info_types
+
+- story: prevention request with more info
+  steps:
+  - intent: ask_prevention
+    entities:
+    - disease: "cold"
+  - slot_was_set:
+    - current_disease: "cold" 
+    - current_info_type: "prevention"
+  - action: action_provide_prevention
+  - action: utter_more_info_options
+  - intent: ask_more_info
+  - action: action_suggest_info_types
+
+- story: guided conversation flow
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_disease_info
+    entities:
+    - disease: "asthma"
+  - slot_was_set:
+    - current_disease: "asthma"
+  - action: action_suggest_info_types
+  - intent: ask_home_treatment
+  - slot_was_set:
+    - current_info_type: "home_treatment"
+  - action: action_provide_home_treatment
+  - action: utter_more_info_options
+  - intent: affirm
+  - action: action_suggest_info_types
+
+- story: disease switching conversation
+  steps:
+  - intent: ask_symptoms
+    entities:
+    - disease: "asthma"
+  - slot_was_set:
+    - current_disease: "asthma"
+    - current_info_type: "symptoms"
+  - action: action_provide_symptoms
+  - action: utter_more_info_options
+  - intent: ask_follow_up
+    entities:
+    - disease: "anxiety"
+  - slot_was_set:
+    - current_disease: "anxiety"
+  - action: action_suggest_info_types
+
+- story: compare diseases
+  steps:
+  - intent: compare_diseases
+    entities:
+    - disease: "asthma"
+    - comparison_disease: "cold"
+  - action: action_compare_diseases
+
+- story: context follow up after treatment
+  steps:
+  - intent: ask_home_treatment
+    entities:
+    - disease: "baldness"
+  - slot_was_set:
+    - current_disease: "baldness"
+    - current_info_type: "home_treatment"
+  - action: action_provide_home_treatment
+  - action: utter_more_info_options
+  - intent: ask_different_aspect
+  - action: action_suggest_info_types
+  - intent: ask_causes
+  - slot_was_set:
+    - current_info_type: "causes"
+  - action: action_provide_causes
+  - action: utter_more_info_options
+
+- story: awareness request
+  steps:
+  - intent: ask_awareness
+    entities:
+    - disease: "breast cancer"
+  - slot_was_set:
+    - current_disease: "breast cancer"
+    - current_info_type: "awareness"
+  - action: action_provide_awareness
+  - action: utter_more_info_options
+
+- story: WHO guidelines request
+  steps:
+  - intent: ask_who_guidelines
+    entities:
+    - disease: "autism"
+  - slot_was_set:
+    - current_disease: "autism"
+    - current_info_type: "who_guidelines"
+  - action: action_provide_who_guidelines
+  - action: utter_more_info_options
+
+- story: fallback with suggestions
+  steps:
+  - intent: nlu_fallback
+  - action: action_fallback_with_suggestions
+
+- story: out of scope handling
+  steps:
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+  - action: utter_disease_options
+
+- story: no disease specified
+  steps:
+  - intent: ask_home_treatment
+  - action: utter_ask_disease_clarification
+  - intent: ask_disease_info
+    entities:
+    - disease: "arthritis"
+  - slot_was_set:
+    - current_disease: "arthritis"
+  - action: action_suggest_info_types
+
+- story: complex conversation with multiple aspects
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_disease_info
+    entities:
+    - disease: "diabetes"
+  - slot_was_set:
+    - current_disease: "diabetes"
+  - action: action_suggest_info_types
+  - intent: ask_symptoms
+  - slot_was_set:
+    - current_info_type: "symptoms"
+  - action: action_provide_symptoms
+  - intent: ask_more_info
+  - action: utter_more_info_options
+  - intent: ask_home_treatment
+  - slot_was_set:
+    - current_info_type: "home_treatment"
+  - action: action_provide_home_treatment
+  - intent: ask_follow_up
+    entities:
+    - disease: "anaemia"
+  - slot_was_set:
+    - current_disease: "anaemia"
+  - action: action_suggest_info_types
+
+- story: denial after suggestion
+  steps:
+  - intent: ask_disease_info
+    entities:
+    - disease: "boils"
+  - slot_was_set:
+    - current_disease: "boils"
+  - action: action_suggest_info_types
+  - intent: deny
+  - action: utter_goodbye
+
+- story: affirmation leading to more info
+  steps:
+  - intent: ask_causes
+    entities:
+    - disease: "body pain"
+  - slot_was_set:
+    - current_disease: "body pain"
+    - current_info_type: "causes"
+  - action: action_provide_causes
+  - action: utter_more_info_options
+  - intent: affirm
+  - action: action_suggest_info_types
+  - intent: ask_prevention
+  - slot_was_set:
+    - current_info_type: "prevention"
+  - action: action_provide_prevention
+
+- story: comprehensive information request
+  steps:
+  - intent: ask_comprehensive_info
+    entities:
+    - disease: "asthma"
+  - slot_was_set:
+    - current_disease: "asthma"
+    - current_info_type: "comprehensive"
+  - action: action_provide_comprehensive_info
+
+- story: comprehensive info with greeting
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_comprehensive_info
+    entities:
+    - disease: "diabetes"
+  - slot_was_set:
+    - current_disease: "diabetes"
+    - current_info_type: "comprehensive"
+  - action: action_provide_comprehensive_info
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: comprehensive info followed by specific question
+  steps:
+  - intent: ask_comprehensive_info
+    entities:
+    - disease: "anxiety"
+  - slot_was_set:
+    - current_disease: "anxiety"
+    - current_info_type: "comprehensive"
+  - action: action_provide_comprehensive_info
+  - intent: ask_home_treatment
+  - slot_was_set:
+    - current_info_type: "home_treatment"
+  - action: action_provide_home_treatment
+
+- story: comprehensive info different diseases
+  steps:
+  - intent: ask_comprehensive_info
+    entities:
+    - disease: "acne"
+  - slot_was_set:
+    - current_disease: "acne"
+    - current_info_type: "comprehensive"
+  - action: action_provide_comprehensive_info
+  - intent: ask_follow_up
+    entities:
+    - disease: "arthritis"
+  - slot_was_set:
+    - current_disease: "arthritis"
+  - action: action_suggest_info_types
+
+- story: ask comprehensive without disease entity
+  steps:
+  - intent: ask_comprehensive_info
+  - action: utter_ask_disease_clarification
+  - intent: ask_disease_info
+    entities:
+    - disease: "cold"
+  - slot_was_set:
+    - current_disease: "cold"
+  - action: action_provide_comprehensive_info
+
+- story: comprehensive info for cancer diseases
+  steps:
+  - intent: ask_comprehensive_info
+    entities:
+    - disease: "lung cancer"
+  - slot_was_set:
+    - current_disease: "lung cancer"
+    - current_info_type: "comprehensive"
+  - action: action_provide_comprehensive_info
+
+- story: comprehensive info for neurological diseases
+  steps:
+  - intent: ask_comprehensive_info
+    entities:
+    - disease: "parkinson's disease"
+  - slot_was_set:
+    - current_disease: "parkinson's disease"
+    - current_info_type: "comprehensive"
+  - action: action_provide_comprehensive_info
+
+- story: comprehensive info for cardiovascular diseases
+  steps:
+  - intent: ask_comprehensive_info
+    entities:
+    - disease: "heart failure"
+  - slot_was_set:
+    - current_disease: "heart failure"
+    - current_info_type: "comprehensive"
+  - action: action_provide_comprehensive_info
+
+- story: symptoms of serious diseases
+  steps:
+  - intent: ask_symptoms
+    entities:
+    - disease: "brain tumor"
+  - slot_was_set:
+    - current_disease: "brain tumor"
+    - current_info_type: "symptoms"
+  - action: action_provide_symptoms
+  - action: utter_more_info_options

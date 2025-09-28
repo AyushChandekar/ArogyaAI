@@ -1,0 +1,69 @@
+services:
+  # Backend API Service
+  - type: web
+    name: arogyaai-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python backend.py
+    plan: starter
+    region: oregon
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: TELEGRAM_BOT_TOKEN
+        fromSecret: TELEGRAM_BOT_TOKEN
+      - key: TELEGRAM_BOT_USERNAME
+        fromSecret: TELEGRAM_BOT_USERNAME
+      - key: TWILIO_ACCOUNT_SID
+        fromSecret: TWILIO_ACCOUNT_SID
+      - key: TWILIO_AUTH_TOKEN
+        fromSecret: TWILIO_AUTH_TOKEN
+      - key: TWILIO_PHONE_NUMBER
+        fromSecret: TWILIO_PHONE_NUMBER
+      - key: WEBHOOK_URL
+        fromSecret: WEBHOOK_URL
+      - key: GROQ_API_KEY
+        fromSecret: GROQ_API_KEY
+      - key: RASA_SERVER_URL
+        value: http://localhost:5005/webhooks/rest/webhook
+      - key: DEBUG
+        value: False
+      - key: PORT
+        value: 8000
+
+  # Webhook Service (separate service for handling webhooks)
+  - type: web
+    name: arogyaai-webhooks
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python webhook_server.py
+    plan: starter
+    region: oregon
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: TELEGRAM_BOT_TOKEN
+        fromSecret: TELEGRAM_BOT_TOKEN
+      - key: TWILIO_ACCOUNT_SID
+        fromSecret: TWILIO_ACCOUNT_SID
+      - key: TWILIO_AUTH_TOKEN
+        fromSecret: TWILIO_AUTH_TOKEN
+      - key: WEBHOOK_PORT
+        value: 5001
+
+  # Background Worker for Rasa (if needed as separate service)
+  - type: worker
+    name: arogyaai-rasa
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: rasa run --enable-api --cors="*" --port 5005
+    plan: starter
+    region: oregon
+    branch: main
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0

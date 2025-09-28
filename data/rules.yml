@@ -1,0 +1,143 @@
+version: "3.1"
+
+rules:
+
+- rule: Activate fallback
+  steps:
+  - intent: nlu_fallback
+  - action: action_fallback_with_suggestions
+
+- rule: Handle out of scope
+  steps:
+  - intent: out_of_scope
+  - action: utter_out_of_scope
+  - action: utter_disease_options
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Greet anytime the user greets
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Handle disease info without disease entity
+  condition:
+  - slot_was_set:
+    - current_disease: null
+  steps:
+  - intent: ask_disease_info
+  - action: utter_ask_disease_clarification
+
+- rule: Handle home treatment without disease entity
+  condition:
+  - slot_was_set:
+    - current_disease: null
+  steps:
+  - intent: ask_home_treatment
+  - action: utter_ask_disease_clarification
+
+- rule: Handle symptoms without disease entity
+  condition:
+  - slot_was_set:
+    - current_disease: null
+  steps:
+  - intent: ask_symptoms
+  - action: utter_ask_disease_clarification
+
+- rule: Handle causes without disease entity
+  condition:
+  - slot_was_set:
+    - current_disease: null
+  steps:
+  - intent: ask_causes
+  - action: utter_ask_disease_clarification
+
+- rule: Handle prevention without disease entity
+  condition:
+  - slot_was_set:
+    - current_disease: null
+  steps:
+  - intent: ask_prevention
+  - action: utter_ask_disease_clarification
+
+- rule: Handle awareness without disease entity
+  condition:
+  - slot_was_set:
+    - current_disease: null
+  steps:
+  - intent: ask_awareness
+  - action: utter_ask_disease_clarification
+
+- rule: Handle WHO guidelines without disease entity
+  condition:
+  - slot_was_set:
+    - current_disease: null
+  steps:
+  - intent: ask_who_guidelines
+  - action: utter_ask_disease_clarification
+
+- rule: Provide home treatment when disease is known
+  steps:
+  - intent: ask_home_treatment
+    entities:
+    - disease
+  - action: action_provide_home_treatment
+  - action: utter_more_info_options
+
+- rule: Provide symptoms when disease is known
+  steps:
+  - intent: ask_symptoms
+    entities:
+    - disease
+  - action: action_provide_symptoms
+  - action: utter_more_info_options
+
+- rule: Provide causes when disease is known
+  steps:
+  - intent: ask_causes
+    entities:
+    - disease
+  - action: action_provide_causes
+  - action: utter_more_info_options
+
+- rule: Provide prevention when disease is known
+  steps:
+  - intent: ask_prevention
+    entities:
+    - disease
+  - action: action_provide_prevention
+  - action: utter_more_info_options
+
+- rule: Provide awareness when disease is known
+  steps:
+  - intent: ask_awareness
+    entities:
+    - disease
+  - action: action_provide_awareness
+  - action: utter_more_info_options
+
+- rule: Provide WHO guidelines when disease is known
+  steps:
+  - intent: ask_who_guidelines
+    entities:
+    - disease
+  - action: action_provide_who_guidelines
+  - action: utter_more_info_options
+
+- rule: Handle comprehensive info without disease entity
+  condition:
+  - slot_was_set:
+    - current_disease: null
+  steps:
+  - intent: ask_comprehensive_info
+  - action: utter_ask_disease_clarification
+
+- rule: Provide comprehensive info when disease is known
+  steps:
+  - intent: ask_comprehensive_info
+    entities:
+    - disease
+  - action: action_provide_comprehensive_info
