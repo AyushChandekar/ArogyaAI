@@ -78,7 +78,7 @@ class TwilioHandler:
             sender_id = user_id.replace('+', '').replace(':', '_').replace('whatsapp_', 'wa_')
             
             # Try to get response from FastAPI backend first
-            backend_url = "http://localhost:8000/api/query"
+            backend_url = os.getenv('BACKEND_API_URL', 'https://arogyaai-yr7b.onrender.com/api/query')
             payload = {
                 "query": message,
                 "user_id": f"twilio_{sender_id}"

@@ -104,7 +104,7 @@ class TelegramBotHandler:
         """Get response from the chatbot system"""
         try:
             # Try to get response from FastAPI backend first
-            backend_url = "http://localhost:8000/api/query"
+            backend_url = os.getenv('BACKEND_API_URL', 'https://arogyaai-yr7b.onrender.com/api/query')
             payload = {
                 "query": message,
                 "user_id": f"telegram_{user_id}"
