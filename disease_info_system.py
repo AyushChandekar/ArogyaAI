@@ -196,6 +196,31 @@ class DiseaseInfoSystem:
         disease_name, confidence = self.find_disease(user_input)
         
         if not disease_name:
+            # Check if it's a general greeting or introduction query
+            general_queries = ['who are you', 'what are you', 'hello', 'hi', 'hey', 'about', 'help', 'what can you do', 'introduce']
+            if any(word in user_input.lower() for word in general_queries):
+                return """🏥 **Hello! I'm ArogyaAI - Your AI Health Assistant**
+
+🤖 **What I can do:**
+• Provide detailed information about 340+ diseases
+• Explain symptoms, causes, and precautions
+• Suggest home treatments and remedies
+• Share WHO guidelines and medical awareness
+• Support multiple languages automatically
+
+💬 **How to use me:**
+• Ask about any disease: "diabetes symptoms"
+• Ask about treatments: "home treatment for asthma"
+• Ask about causes: "what causes heart disease"
+• Ask in your language: "मधुमेह के लक्षण" (Hindi)
+
+⚠️ **Important:** I provide information for educational purposes. Always consult healthcare professionals for medical advice.
+
+🌟 **Try asking:** "What are the symptoms of diabetes?" or "Home treatment for headache"
+
+==================================================
+💬 Ask me about any health condition!"""
+            
             # Suggest available diseases
             diseases_list = ', '.join(self.df['disease'].tolist() if not self.df.empty else [])
             return f"❌ I couldn't find a matching disease. Available diseases include:\n{diseases_list}\n\n💡 Try asking: 'Tell me about asthma' or 'Home treatment for acne'"
