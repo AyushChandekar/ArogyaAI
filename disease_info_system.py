@@ -92,7 +92,7 @@ class DiseaseInfoSystem:
                 best_score = max_score
                 best_disease = disease
         
-        if best_score >= 60:
+        if best_score >= 75:  # Increased threshold to reduce false matches
             return best_disease, best_score
         
         # Try individual words from user input
@@ -192,14 +192,12 @@ class DiseaseInfoSystem:
         if not user_input.strip():
             return "❓ Please enter a disease name or ask a question about a specific disease."
         
-        # Find disease in the query
-        disease_name, confidence = self.find_disease(user_input)
+        # Check for greetings and general queries FIRST
+        user_input_lower = user_input.lower().strip()
+        general_queries = ['hello', 'hi', 'hey', 'who are you', 'what are you', 'about', 'help', 'what can you do', 'introduce', 'start']
         
-        if not disease_name:
-            # Check if it's a general greeting or introduction query
-            general_queries = ['who are you', 'what are you', 'hello', 'hi', 'hey', 'about', 'help', 'what can you do', 'introduce']
-            if any(word in user_input.lower() for word in general_queries):
-                return """🏥 **Hello! I'm ArogyaAI - Your AI Health Assistant**
+        if any(greeting in user_input_lower for greeting in general_queries):
+            return """🏥 **Hello! I'm ArogyaAI - Your AI Health Assistant**
 
 🤖 **What I can do:**
 • Provide detailed information about 340+ diseases
@@ -220,7 +218,11 @@ class DiseaseInfoSystem:
 
 ==================================================
 💬 Ask me about any health condition!"""
-            
+        
+        # Find disease in the query
+        disease_name, confidence = self.find_disease(user_input)
+        
+        if not disease_name:
             # Suggest available diseases
             diseases_list = ', '.join(self.df['disease'].tolist() if not self.df.empty else [])
             return f"❌ I couldn't find a matching disease. Available diseases include:\n{diseases_list}\n\n💡 Try asking: 'Tell me about asthma' or 'Home treatment for acne'"
