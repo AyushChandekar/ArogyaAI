@@ -111,7 +111,6 @@ async def health_check():
             "twilio": twilio_handler is not None
         }
     }
-    }
 
 # Telegram webhook - simplified approach
 @app.post("/telegram")
