@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8000
 
 # Default command (can be overridden)
-CMD ["python", "backend.py"]
+CMD ["python", "start.py"]
