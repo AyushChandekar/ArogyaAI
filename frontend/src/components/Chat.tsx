@@ -97,18 +97,18 @@ export default function Chat() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+    <div className="h-screen flex flex-col" style={{backgroundColor: 'var(--background)', color: 'var(--foreground)'}}>
       {/* Header - Clean and Simple */}
-      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4">
+      <header className="border-b px-4 py-4" style={{backgroundColor: 'var(--background)', borderColor: 'var(--border)'}}>
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           {/* Logo and Title */}
           <div className="flex items-center gap-3">
             <Heart className="h-8 w-8 text-red-500" />
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-2xl font-bold" style={{color: 'var(--foreground)'}}>
                 ArogyaAI
               </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm opacity-70" style={{color: 'var(--foreground)'}}>
                 Intelligent Health Assistant
               </p>
             </div>
@@ -121,7 +121,7 @@ export default function Chat() {
 
       {/* Main Chat Area - Takes remaining height */}
       <main className="flex-1 flex flex-col min-h-0 max-w-4xl mx-auto w-full p-4">
-        <div className="flex-1 flex flex-col bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="flex-1 flex flex-col rounded-lg shadow-md border overflow-hidden" style={{backgroundColor: 'var(--background)', borderColor: 'var(--border)'}}>
           
           {/* Chat Header */}
           <div className="bg-blue-600 dark:bg-blue-700 text-white px-6 py-4">
@@ -148,10 +148,10 @@ export default function Chat() {
               /* Welcome Message */
               <div className="text-center py-12">
                 <Heart className="h-12 w-12 text-red-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                <h3 className="text-xl font-semibold mb-2" style={{color: 'var(--foreground)'}}>
                   Welcome to ArogyaAI!
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+                <p className="opacity-70 mb-6 max-w-md mx-auto" style={{color: 'var(--foreground)'}}>
                   I&apos;m your intelligent health assistant. I can provide information about diseases, symptoms, treatments, and WHO guidelines in multiple languages.
                 </p>
                 <div className="mb-6">
@@ -181,7 +181,7 @@ export default function Chat() {
           </div>
 
           {/* Input Area - Fixed at bottom */}
-          <div className="border-t border-gray-200 dark:border-gray-700">
+          <div className="border-t" style={{borderColor: 'var(--border)'}}>
             <ChatInput 
               onSendMessage={handleSendMessage} 
               loading={loading} 
