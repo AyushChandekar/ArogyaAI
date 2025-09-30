@@ -1,17 +1,16 @@
 @import "tailwindcss";
 
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --border: #e5e7eb;
+  --background: linear-gradient(120deg, #a0beff 30%, #aeffb9 70%);
+  --foreground: #000000;
+  --border: #000000;
   --muted: #6b7280;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --border: #374151;
+  --background: #181818;
+  --foreground: #ffffff;
+  --border: #313746;
   --muted: #9ca3af;
 }
 
@@ -25,7 +24,8 @@
 }
 
 * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
 }
 
 body {
@@ -54,7 +54,6 @@ html.dark body {
   background-color: #0f172a;
   color: #f8fafc;
 }
-
 
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
@@ -146,4 +145,115 @@ html.dark body {
 
 .dark .chat-messages {
   scrollbar-color: #475569 #1e293b;
+}
+
+/* Custom class for language support text */
+.language-support-text {
+  color: #ffffff !important;
+}
+
+.dark .language-support-text {
+  color: #60a5fa !important;
+}
+
+.darkkk {
+  color: #000000 !important;
+}
+
+.dark .darkkk {
+  color: #ffffff !important;
+}
+
+.inputboxx {
+  --background: #ffffff;
+  background: var(--background) !important;
+  color: #001b05 !important;
+}
+
+.dark .inputboxx {
+  background-color: #364153 !important;
+  color: #ffffff !important;
+}
+
+.clickable {
+  background-color: rgb(180, 134, 217) !important; /* Light mode */
+  border-radius: 0.5rem; /* rounded corners */
+  transition: all 0.3s ease; /* smooth transition */
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
+}
+
+.clickable:hover {
+  transform: translateY(-3px) scale(1.02); /* slight lift and scale */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* stronger shadow */
+}
+
+.dark .clickable {
+  background-color: #364153 !important; /* Dark mode */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); /* subtle shadow in dark */
+}
+
+.dark .clickable:hover {
+  transform: translateY(-3px) scale(1.02); /* same lift & scale */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7); /* stronger shadow in dark */
+}
+
+
+.colordark{
+  color: rgb(114, 0, 190) !important;
+}
+
+.dark .colordark{
+  color:#1e88e5 !important;
+}
+
+.description{
+  color:#ffffff !important;
+}
+
+.dark .description{
+  color:#cae586 !important;
+}
+
+.heading{
+  background-color: rgb(187, 0, 255);
+}
+
+.dark .heading{
+  background-color: blue;
+}
+
+
+.sending{
+  background-color: rgb(114, 0, 190) !important;
+}
+
+.dark .sending{
+  background-color: #1e88e5 !important;
+}
+
+/* User messages (light mode) */
+.user-message.chatsending {
+  background-color: rgb(114, 0, 190) !important;
+  color: white !important;
+}
+
+/* User messages (dark mode) */
+.dark .user-message.chatsending {
+  background-color: #1e88e5 !important;
+  color: white !important;
+}
+
+/* Other messages (light mode) */
+.other-message.chatsending {
+  background-color: rgb(255, 255, 255) !important;
+  color: rgb(30, 30, 30) !important;
+  border: 2px solid #9500ff !important;
+}
+
+/* Other messages (dark mode) */
+.dark .other-message.chatsending {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+  border: 0px solid #1e88e5 !important
 }

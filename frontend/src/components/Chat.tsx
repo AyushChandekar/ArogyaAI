@@ -124,8 +124,8 @@ export default function Chat() {
         <div className="flex-1 flex flex-col rounded-lg shadow-md border overflow-hidden" style={{backgroundColor: 'var(--background)', borderColor: 'var(--border)'}}>
           
           {/* Chat Header */}
-          <div className="bg-blue-600 dark:bg-blue-700 text-white px-6 py-4">
-            <h2 className="text-lg font-semibold flex items-center gap-2">
+          <div className="bg-blue-600 dark:bg-blue-700 text-white px-6 py-4 heading">
+            <h2 className="text-lg font-semibold flex items-center gap-2 ">
               💬 Chat with ArogyaAI
               {loading && <div className="w-2 h-2 bg-white rounded-full animate-ping" />}
               <span className="text-xs bg-white/20 px-2 py-1 rounded-full">
@@ -155,9 +155,9 @@ export default function Chat() {
                   I&apos;m your intelligent health assistant. I can provide information about diseases, symptoms, treatments, and WHO guidelines in multiple languages.
                 </p>
                 <div className="mb-6">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-full text-sm ">
                     <span className="text-lg">🌍</span>
-                    <span>Supports 15+ languages automatically</span>
+                    <span className="language-support-text">Supports 15+ languages automatically</span>
                   </div>
                 </div>
                 

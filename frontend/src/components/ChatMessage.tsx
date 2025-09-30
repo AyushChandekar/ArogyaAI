@@ -26,10 +26,8 @@ export default function ChatMessage({ message }: ChatMessageProps) {
       message.isUser ? "text-right" : "text-left"
     )}>
       <div className={cn(
-        "inline-block max-w-[80%] p-4 rounded-lg",
-        message.isUser 
-          ? "bg-blue-600 text-white" 
-          : "bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+       "inline-block max-w-[80%] p-4 rounded-lg chatsending",
+      message.isUser ? "user-message" : "other-message"
       )}>
         <div className="whitespace-pre-wrap break-words">
           {formatContent(message.content)}
