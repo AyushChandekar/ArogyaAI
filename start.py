@@ -41,15 +41,33 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Startup event to initialize Telegram handler
+@app.on_event("startup")
+async def startup_event():
+    """Initialize async components on startup"""
+    await initialize_telegram_handler()
+
+# Shutdown event to cleanup
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Cleanup on shutdown"""
+    if telegram_handler and telegram_handler.application:
+        await telegram_handler.application.shutdown()
+
 # Initialize handlers
 telegram_handler = None
 twilio_handler = None
 
-try:
-    telegram_handler = create_telegram_handler()
-    logger.info("Telegram handler initialized")
-except Exception as e:
-    logger.error(f"Failed to initialize Telegram handler: {e}")
+async def initialize_telegram_handler():
+    """Initialize Telegram handler with proper async setup"""
+    global telegram_handler
+    try:
+        telegram_handler = create_telegram_handler()
+        await telegram_handler.application.initialize()
+        logger.info("Telegram handler initialized")
+    except Exception as e:
+        logger.error(f"Failed to initialize Telegram handler: {e}")
+        telegram_handler = None
 
 try:
     twilio_handler = create_twilio_handler()
@@ -93,31 +111,65 @@ async def health_check():
             "twilio": twilio_handler is not None
         }
     }
+    }
 
-# Telegram webhook
+# Telegram webhook - simplified approach
 @app.post("/telegram")
 async def telegram_webhook(request: Request):
-    """Handle Telegram webhook"""
-    if not telegram_handler:
-        raise HTTPException(status_code=500, detail="Telegram handler not available")
-    
+    """Handle Telegram webhook - direct message processing"""
     try:
         json_data = await request.json()
         logger.info(f"Received Telegram webhook: {json_data}")
         
-        # Create Update object and process it
-        update = Update.de_json(json_data, telegram_handler.bot)
+        # Extract message data
+        if 'message' not in json_data:
+            return {"status": "ok"}  # No message to process
+            
+        message_data = json_data['message']
+        user_id = str(message_data['from']['id'])
+        chat_id = message_data['chat']['id']
+        text = message_data.get('text', '')
         
-        # Process the update asynchronously
-        asyncio.create_task(
-            telegram_handler.application.process_update(update)
-        )
+        if not text:
+            return {"status": "ok"}  # No text to process
+            
+        # Get response from backend API
+        try:
+            import requests
+            backend_response = requests.post(
+                'http://localhost:8000/api/query',
+                json={
+                    'query': text,
+                    'user_id': f'telegram_{user_id}'
+                },
+                timeout=10
+            )
+            
+            if backend_response.status_code == 200:
+                response_data = backend_response.json()
+                bot_response = response_data.get('response', 'Sorry, I could not process your request.')
+            else:
+                bot_response = "I'm having trouble processing your request. Please try again."
+                
+        except Exception as e:
+            logger.error(f"Error getting backend response: {e}")
+            bot_response = "I'm experiencing technical difficulties. Please try again later."
+        
+        # Send response back to user via Telegram API
+        if telegram_handler and telegram_handler.bot:
+            try:
+                await telegram_handler.bot.send_message(
+                    chat_id=chat_id,
+                    text=bot_response
+                )
+            except Exception as e:
+                logger.error(f"Error sending Telegram message: {e}")
         
         return {"status": "ok"}
         
     except Exception as e:
         logger.error(f"Error processing Telegram webhook: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"status": "error", "message": str(e)}
 
 # WhatsApp webhook
 @app.post("/whatsapp")
