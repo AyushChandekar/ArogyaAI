@@ -71,9 +71,18 @@ export default function Chat() {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setError(errorMessage);
       
+      // Show user-friendly error message with refresh suggestion
+      const isConnectionError = errorMessage.includes('timed out') || 
+                               errorMessage.includes('Connection failed') || 
+                               errorMessage.includes('server is starting up');
+      
+      const friendlyMessage = isConnectionError 
+        ? `🔄 **Connection Issue**: The server might be starting up or there's a network issue.\n\n**Quick Fix**: Please refresh this page and try again. This usually resolves the issue!\n\n*Technical details: ${errorMessage}*`
+        : `❌ Sorry, I encountered an error: ${errorMessage}`;
+      
       const errorBotMessage: Message = {
         id: generateId(),
-        content: `❌ Sorry, I encountered an error: ${errorMessage}`,
+        content: friendlyMessage,
         isUser: false,
         timestamp: new Date(),
       };
@@ -183,15 +192,35 @@ export default function Chat() {
         {/* Error Display */}
         {error && (
           <div className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-red-800 dark:text-red-200">
-              <AlertCircle className="h-5 w-5" />
-              <span className="flex-1">{error}</span>
-              <button
-                onClick={() => setError(null)}
-                className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200"
-              >
-                ✕
-              </button>
+            <div className="flex items-start gap-2 text-red-800 dark:text-red-200">
+              <AlertCircle className="h-5 w-5 mt-0.5" />
+              <div className="flex-1">
+                <span>{error}</span>
+                {(error.includes('timed out') || error.includes('Connection failed') || error.includes('server is starting up')) && (
+                  <div className="mt-3 flex gap-2">
+                    <button
+                      onClick={() => window.location.reload()}
+                      className="px-3 py-1 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800 text-blue-800 dark:text-blue-200 rounded text-sm font-medium transition-colors"
+                    >
+                      🔄 Refresh Page
+                    </button>
+                    <button
+                      onClick={() => setError(null)}
+                      className="px-3 py-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded text-sm transition-colors"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                )}
+              </div>
+              {!(error.includes('timed out') || error.includes('Connection failed') || error.includes('server is starting up')) && (
+                <button
+                  onClick={() => setError(null)}
+                  className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           </div>
         )}
