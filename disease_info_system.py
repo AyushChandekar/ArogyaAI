@@ -152,18 +152,9 @@ class DiseaseInfoSystem:
         if not disease_info:
             return f"❌ Sorry, I couldn't find information about '{disease_name}'. Please check the spelling or try another disease name."
         
-        # Get priority order for this query type
-        priority_order = self.feature_priorities.get(query_type, self.feature_priorities['overview'])
-        
         response_parts = []
         
-        # Add header based on query type
-        if query_type == 'overview':
-            response_parts.append(f"🏥 **Complete Information about {disease_info['disease']}**\n")
-        else:
-            response_parts.append(f"🔍 **{query_type.replace('_', ' ').title()} for {disease_info['disease']}**\n")
-        
-        # Add information in priority order
+        # Feature titles mapping
         feature_titles = {
             'overview': '📋 **Overview**',
             'causes': '🔍 **Causes**',
@@ -174,16 +165,42 @@ class DiseaseInfoSystem:
             'who_guidelines': '🏛️ **WHO Guidelines**'
         }
         
-        for feature in priority_order:
-            if feature in disease_info and disease_info[feature] and str(disease_info[feature]).strip():
-                content = str(disease_info[feature]).strip()
+        # For specific query types, return only that information
+        if query_type in ['home_treatment', 'symptoms', 'causes', 'precautions', 'awareness', 'who_guidelines']:
+            # Return only the specific information requested
+            if query_type in disease_info and disease_info[query_type] and str(disease_info[query_type]).strip():
+                content = str(disease_info[query_type]).strip()
                 if content and content != 'nan':
-                    response_parts.append(f"\n{feature_titles.get(feature, f'**{feature.title()}**')}")
+                    response_parts.append(f"🔍 **{query_type.replace('_', ' ').title()} for {disease_info['disease']}**\n")
+                    response_parts.append(f"{feature_titles.get(query_type)}")
                     response_parts.append(f"{content}")
+                    response_parts.append("\n" + "="*30)
+                    response_parts.append("💬 Ask me for more info: 'symptoms of asthma' or 'causes of diabetes'")
+                else:
+                    response_parts.append(f"❌ Sorry, I don't have {query_type.replace('_', ' ')} information for {disease_info['disease']}.")
+            else:
+                response_parts.append(f"❌ Sorry, I don't have {query_type.replace('_', ' ')} information for {disease_info['disease']}.")
         
-        # Add separator
-        response_parts.append("\n" + "="*50)
-        response_parts.append("💬 Ask me about specific aspects like 'home treatment for asthma' or 'causes of baldness'!")
+        # For comprehensive/overview queries, return all information
+        elif query_type in ['comprehensive', 'overview']:
+            response_parts.append(f"🏥 **Complete Information about {disease_info['disease']}**\n")
+            
+            # Get priority order for comprehensive view
+            priority_order = self.feature_priorities.get('comprehensive', self.feature_priorities['overview'])
+            
+            for feature in priority_order:
+                if feature in disease_info and disease_info[feature] and str(disease_info[feature]).strip():
+                    content = str(disease_info[feature]).strip()
+                    if content and content != 'nan':
+                        response_parts.append(f"\n{feature_titles.get(feature, f'**{feature.title()}**')}")
+                        response_parts.append(f"{content}")
+            
+            response_parts.append("\n" + "="*50)
+            response_parts.append("💬 Ask me about specific aspects like 'home treatment for asthma' or 'causes of baldness'!")
+        
+        else:
+            # Default to overview for unknown query types
+            return self.format_response(disease_info, 'overview', disease_name)
         
         return "\n".join(response_parts)
     
@@ -192,11 +209,15 @@ class DiseaseInfoSystem:
         if not user_input.strip():
             return "❓ Please enter a disease name or ask a question about a specific disease."
         
-        # Check for greetings and general queries FIRST
+        # Check for greetings and general queries FIRST (but not if it contains disease names)
         user_input_lower = user_input.lower().strip()
-        general_queries = ['hello', 'hi', 'hey', 'who are you', 'what are you', 'about', 'help', 'what can you do', 'introduce', 'start']
+        general_queries = ['hello', 'hi', 'hey', 'who are you', 'what are you', 'help', 'what can you do', 'introduce', 'start']
         
-        if any(greeting in user_input_lower for greeting in general_queries):
+        # Only treat as greeting if no disease name is mentioned
+        contains_disease = any(disease.lower() in user_input_lower for disease in self.df['disease'].tolist() if not self.df.empty)
+        is_greeting = any(greeting in user_input_lower for greeting in general_queries)
+        
+        if is_greeting and not contains_disease:
             return """🏥 **Hello! I'm ArogyaAI - Your AI Health Assistant**
 
 🤖 **What I can do:**

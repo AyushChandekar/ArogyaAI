@@ -17,9 +17,14 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for now - you can restrict this later
-    allow_credentials=False,  # Set to False when using allow_origins=["*"]
-    allow_methods=["*"],
+    allow_origins=[
+        "https://arogyaai-lake.vercel.app",
+        "http://localhost:3000",
+        "http://localhost:8000",
+        "*"  # Allow all for development
+    ],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -31,7 +36,7 @@ disease_system = DiseaseInfoSystem(csv_file)
 translation_service = get_translation_service()
 
 # Rasa server configuration
-RASA_SERVER_URL = "http://localhost:5005/webhooks/rest/webhook"
+RASA_SERVER_URL = os.getenv('RASA_SERVER_URL', "http://localhost:5005/webhooks/rest/webhook")
 
 # Pydantic models
 class QueryRequest(BaseModel):
@@ -174,6 +179,14 @@ async def get_diseases():
             detail=f"An error occurred: {str(e)}"
         )
 
+async def check_rasa_health() -> bool:
+    """Check if Rasa server is available"""
+    try:
+        response = requests.get(RASA_SERVER_URL.replace('/webhooks/rest/webhook', '/'), timeout=5)
+        return response.status_code == 200
+    except:
+        return False
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
@@ -198,6 +211,27 @@ async def get_supported_languages():
         "supported_languages": supported_languages,
         "note": "ArogyaAI can detect and respond in multiple languages automatically"
     }
+
+if __name__ == "__main__":
+    # Run the server
+    port = int(os.getenv("PORT", 8000))
+    host = "0.0.0.0"
+    
+    print(f"🚀 Starting ArogyaAI Backend Server...")
+    print(f"🌐 Server URL: http://{host}:{port}")
+    print(f"🏥 Health Check: http://{host}:{port}/health")
+    print(f"📋 API Docs: http://{host}:{port}/docs")
+    print(f"🤖 Disease System Loaded: {len(disease_system.get_available_diseases())} diseases")
+    print(f"🌍 Translation Service: {'Available' if translation_service else 'Not Available'}")
+    print("\nPress Ctrl+C to stop the server\n")
+    
+    uvicorn.run(
+        "backend:app",
+        host=host,
+        port=port,
+        reload=os.getenv("DEBUG", "False").lower() == "true",
+        log_level="info"
+    )
 
 async def check_rasa_health():
     """Check if Rasa server is available"""
