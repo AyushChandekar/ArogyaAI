@@ -132,23 +132,19 @@ async def telegram_webhook(request: Request):
         if not text:
             return {"status": "ok"}  # No text to process
             
-        # Get response from backend API
+        # Get response from backend API directly
         try:
-            import requests
-            backend_response = requests.post(
-                'http://localhost:8000/api/query',
-                json={
-                    'query': text,
-                    'user_id': f'telegram_{user_id}'
-                },
-                timeout=10
-            )
+            from backend import QueryRequest
             
-            if backend_response.status_code == 200:
-                response_data = backend_response.json()
-                bot_response = response_data.get('response', 'Sorry, I could not process your request.')
-            else:
-                bot_response = "I'm having trouble processing your request. Please try again."
+            # Create request object
+            query_request = QueryRequest(query=text, user_id=f'telegram_{user_id}')
+            
+            # Call backend function directly
+            response_result = await backend_query(query_request)
+            bot_response = response_result.response
+            
+            if not bot_response:
+                bot_response = "Sorry, I could not process your request."
                 
         except Exception as e:
             logger.error(f"Error getting backend response: {e}")
