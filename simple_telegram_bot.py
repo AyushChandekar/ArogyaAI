@@ -27,7 +27,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Configuration - UPDATE THIS WITH YOUR BOT TOKEN
-BOT_TOKEN = "8497556061:AAGn5FHMB8FwDkYCzniLp3msx9m_6bvfy2c"  # Your actual token
+BOT_TOKEN = "INPUT_TOKEN_HERE"  # Your actual token
 BACKEND_URL = "https://arogyaai-yr7b.onrender.com/api/query"
 
 class SimpleArogyaBot:
